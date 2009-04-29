@@ -1,0 +1,8 @@
+# Compiled.
+bin-*
+ 
+# Logs.
+log/*
+ 
+# Google's doc files are on the net and ours should be regenerated each time.
+docs/*

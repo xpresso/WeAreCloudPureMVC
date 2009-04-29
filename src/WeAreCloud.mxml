@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
+    applicationComplete="initFileChooser()"
+	xmlns:maps="com.google.maps.*"
+	xmlns:michaelvandaniker="michaelvandaniker.visualization.*">
+		
+	<mx:Script>
+	<![CDATA[
+		// We will have to change the key before uploading the application.
+
+		import com.google.maps.LatLng;
+		import com.google.maps.Map;
+		import com.google.maps.overlays.Marker;
+		import com.google.maps.services.ClientGeocoder;
+		import com.google.maps.services.GeocodingEvent;
+		import hmp.GHeatMapOverlay;
+
+		private var geocoder:ClientGeocoder;
+		private var heatmap:HeatMap;
+		private var heatMapOverlay:GHeatMapOverlay;
+				
+		private	var latLngList:ArrayCollection = new ArrayCollection();
+	
+		private function onMapReady(event:Event):void
+		{
+			this.geocoder = new ClientGeocoder();
+			this.initializeGeocoder();	
+						
+			this.heatmap = new HeatMap();
+			this.heatmap.transformationFunction = latLonToPoint;
+			this.heatmap.weightFunction = getMagnitude;
+			//hm.gradientArray = GradientDictionary.RAINBOW;			
+			//hm.dataProvider = points;
+			
+			this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
+			this.map.addOverlay(this.heatMapOverlay);
+		}
+			
+		private function latLonToPoint(o:Object):Object
+		{
+			return map.fromLatLngToViewport(o as LatLng);
+		}
+		
+		private function getMagnitude(o:Object):Object
+		{
+			return map.fromLatLngToViewport(o as LatLng);
+		}
+			
+		private function initializeGeocoder():void
+		{
+			
+			geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS,
+				function(event:GeocodingEvent):void {
+					var placemarks:Array = event.response.placemarks;
+					if (placemarks.length > 0) {
+						latLngList.addItem(placemarks[0].point);
+						//Pour tester..
+						//var marker:Marker = new Marker(placemarks[0].point);
+						//map.addOverlay(marker);
+						//..
+					}
+				});
+			geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,
+				function(event:GeocodingEvent):void {
+					trace("Geocoding failed");
+				});
+		}
+		
+		            
+        /* Returns the list of Latitudes-Longitudes found from the list of addresses. */
+		public function translateAddresses(addressesList:ArrayCollection):void
+		{
+			for(var i:int = 0; i < addressesList.length; i++)
+			{
+				geocoder.geocode(addressesList[i]);
+			}
+		}
+	]]>
+	</mx:Script>
+	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
+	width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>
+	
+	<mx:Script>
+        <![CDATA[
+        	import mx.controls.List;
+        	import michaelvandaniker.visualization.GradientDictionary;
+        	import michaelvandaniker.visualization.HeatMap;
+        	import mx.collections.ArrayCollection;
+            import hmp.HeatmapPoint; 
+           
+           /**
+           * The points of the heatmap
+           **/
+            
+            private var points:ArrayCollection = new ArrayCollection(); // init à NULL
+            
+            
+            /**
+            * The 3 different colors of the heatmap
+            **/
+            private const gradients:Array = [
+            	GradientDictionary.THERMAL,
+            	GradientDictionary.RAINBOW,
+            	GradientDictionary.RED_WHITE_BLUE
+            ];
+                
+            /**
+            * Generate the heatmap
+            **/
+            private function generateMap(arrayPoints:ArrayCollection):void
+            {
+            	for each (var pt:HeatmapPoint in arrayPoints)
+            	{
+            		var nb:Number = pt.getIntensity();
+            		for (var a:int=1; a<=nb; a++)
+            		{
+            			points.addItem(pt.getHeatPoint());
+            		}
+            	}
+            	
+            }
+		
+            /**
+            * Listener on the ComboBox
+            **/
+            private function handleComboBoxChange(event:Event):void
+            {
+           		this.heatmap.gradientArray = gradients[event.target.selectedIndex];
+            }           
+        ]]>
+    </mx:Script>
+
+	<mx:Script>
+	<![CDATA[
+		import flash.events.Event;
+		import flash.net.FileReference;
+		import mx.rpc.events.FaultEvent;
+		import mx.rpc.events.ResultEvent;
+		import mx.collections.ArrayCollection;
+
+		private var externalXML:XML;
+		private var file:FileReference;
+		private var typeFilter:Array;
+		private var addressesList:ArrayCollection;
+
+		public function initFileChooser():void
+		{
+			/* Initialization part */
+			typeFilter = initializeTypeFilter();
+			file = new FileReference();
+			initializeListeners(file);
+		}
+
+		public function startApp():void
+		{
+			addressesList = new ArrayCollection();
+			
+			for(var i:int = 0; i < this.externalXML.data.length() ; i++)
+				addressesList.addItem(externalXML.data.adresse[i]);
+
+			translateAddresses(addressesList);
+			this.heatmap.dataProvider = this.latLngList;
+		}
+
+
+		/**
+		 * Get the xml file.
+		 *
+		 *	Warning: externalXML may have a null reference.
+		 */
+		public function getXmlFile():XML
+		{
+			return externalXML;
+		}
+
+		/**
+		 * Initialize the type filter with some FileFilter.
+		 * To add more type to filter, modify this function.
+		 *
+		 * @return Array : the type filter
+		 */
+		private function initializeTypeFilter():Array
+		{
+			var documentFilter:FileFilter = new FileFilter("Documents (*.xml)", "*.xml");
+			return new Array(documentFilter);
+		}
+
+		/**
+		 * Add listeners to the file FileReference.
+		 * To add more Listeners, modify this function.
+		 */
+		private function initializeListeners(dispatcher:IEventDispatcher):void
+		{
+			dispatcher.addEventListener(Event.SELECT, selectHandler);
+			dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+			dispatcher.addEventListener(Event.CANCEL, cancelHandler);
+		}
+
+		/**
+		 * Handle cancel event.
+		 */
+		private function cancelHandler(event:Event):void
+		{
+			trace("cancelHandler: " + event);
+		}
+
+		/**
+		 * Handle select event.
+		 */
+		private function selectHandler(event:Event):void
+		{
+			trace("selectHandler: " + event);
+			var fileRef:FileReference = event.target as FileReference;
+
+			if (fileRef != null)
+		    {
+				fileRef.cancel();
+				fileRef.load();
+		    }
+		    else
+		    {
+		        trace("fileRef is null!");
+		    }
+		}
+
+		/**
+		 * Handle complete event.
+		 */
+		private function completeHandler(event:Event):void
+		{
+			trace("completetHandler: " + event);
+			var fileRef:FileReference = event.target as FileReference;
+
+			if (fileRef != null)
+		    {
+		        externalXML = new XML(fileRef.data);
+		        startApp();
+		        trace(externalXML.toXMLString());
+		    }
+		    else
+		    {
+		        trace("fileRef is null!");
+		    }
+		}
+	]]>
+	</mx:Script>
+	<mx:TextArea x="35" y="381" id="Affiche" width="380" height="103" editable="true" enabled="false"/>
+	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+</mx:Application>
