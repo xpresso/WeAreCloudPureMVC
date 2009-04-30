@@ -11,9 +11,13 @@ package heatmap.model
 	{
 		public static const NAME:String = 'heatmapProxy';
 		
-		public function selectHandler(fileRef:FileReference):void
+		public function HeatmapProxy(data:Object=null)
 		{
-			trace('on est la');
+			super(NAME, data);
+		}
+		
+		public function loadXmlFile(fileRef:FileReference):void
+		{
 			if (fileRef != null)
 		    {
 				fileRef.cancel();
@@ -25,17 +29,16 @@ package heatmap.model
 		    }
 		}
 
-		/**
-		 * Handle complete event.
-		 */
-		public function completeHandler(fileRef:FileReference):void
+		public function extractList(fileRef:FileReference):void
 		{
 			if (fileRef != null)
 		    {
 		        var externalXML:XML = new XML(fileRef.data);
-		        sendNotification(ApplicationFacade.XML_DATA_LOADED, externalXML);
-		        //startApp();
-		        trace(externalXML.toXMLString());
+		        
+		        for(var i:int = 0; i < this.externalXML.data.length() ; i++)
+		        {
+		        	
+		        }
 		    }
 		    else
 		    {

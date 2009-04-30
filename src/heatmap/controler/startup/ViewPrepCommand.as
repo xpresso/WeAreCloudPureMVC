@@ -30,8 +30,7 @@ package heatmap.controler.startup
 		{
             // Register the ApplicationMediator
             var application:Heatmap = note.getBody() as Heatmap;
-             facade.registerMediator( new HeatmapVisualizationMediator( application.heatmapVisualization ) );            
-           
+            facade.registerMediator( new HeatmapVisualizationMediator( application.heatmapVisualization ) );            
         }
 
         

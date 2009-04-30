@@ -20,7 +20,7 @@ package heatmap.controler.startup
     {
         override public function execute( note:INotification ) :void    
 		{
-            facade.registerProxy(new HeatmapProxy());
+			facade.registerProxy(new HeatmapProxy());
         }
     }
 }

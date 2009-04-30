@@ -8,12 +8,12 @@ package heatmap.controler
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.command.SimpleCommand;
 	
-	public class LoadXmlDataCommand extends SimpleCommand implements ICommand
+	public class ExtractDataFromXmlFileCommand  extends SimpleCommand implements ICommand
 	{
 		override public function execute(notification:INotification):void
 		{
 			var proxy:HeatmapProxy = facade.retrieveProxy(HeatmapProxy.NAME) as HeatmapProxy;
-			proxy.loadXmlFile(notification.getBody() as FileReference);
+			proxy.extractList(notification.getBody() as FileReference);
 		}
 	}
 }

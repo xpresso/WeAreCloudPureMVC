@@ -2,14 +2,13 @@
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
 	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
 		width="531" height="333" x="30" y="10" mapevent_mapready=""/>		
-	<mx:TextArea x="35" y="381" id="Affiche" width="380" height="103" editable="true" enabled="false"/>
 	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
 	
 	<mx:Script>
 		<![CDATA[
 			import heatmap.view.events.DocEvent;
 		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
-		public static const XML_DATA_LOADED:String                    = 'xmlDataLoaded';
+		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
 		
 		private var file:FileReference;
 		private var typeFilter:Array;
@@ -36,7 +35,7 @@
 		private function initializeListeners(dispatcher:IEventDispatcher):void
 		{
 			dispatcher.addEventListener(Event.SELECT, selectHandler);
-			//dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+			dispatcher.addEventListener(Event.COMPLETE, completeHandler);
 			//dispatcher.addEventListener(Event.CANCEL, cancelHandler);
 		}
 		
@@ -47,6 +46,15 @@
 		{
 			var fileRef:FileReference = event.target as FileReference;
 			sendEvent(LOAD_XML_DATA, fileRef);
+		}
+		
+		/**
+		 * Handle select event.
+		 */
+		private function completeHandler(event:Event):void
+		{
+			var fileRef:FileReference = event.target as FileReference;			
+			sendEvent(EXTRACT_DATA_FROM_XML_FILE, fileRef);		
 		}
 		
 		private function sendEvent(notificationType:String, body:Object = null):void
