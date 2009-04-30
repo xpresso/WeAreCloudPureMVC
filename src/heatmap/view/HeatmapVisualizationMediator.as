@@ -22,12 +22,7 @@ package heatmap.view
 		{
 			return viewComponent as HeatmapVisualization;
 		}
-		
-		private function onLoadXmlData(event:DocEvent):void
-		{
-			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
-		}
-		
+						
 		override public function listNotificationInterests():Array
 		{
 			return [ApplicationFacade.XML_DATA_LOADED];
@@ -42,6 +37,11 @@ package heatmap.view
 				
 				break;
 			}
+		}
+		
+		private function onLoadXmlData(event:DocEvent):void
+		{
+			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
 	}
 }
