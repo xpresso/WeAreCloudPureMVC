@@ -13,6 +13,7 @@ package heatmap.model
 		
 		public function selectHandler(fileRef:FileReference):void
 		{
+			trace('on est la');
 			if (fileRef != null)
 		    {
 				fileRef.cancel();

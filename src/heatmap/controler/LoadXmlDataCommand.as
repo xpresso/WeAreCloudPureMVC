@@ -13,6 +13,8 @@ package heatmap.controler
 		override public function execute(notification:INotification):void
 		{
 			var proxy:HeatmapProxy = facade.retrieveProxy(HeatmapProxy.NAME) as HeatmapProxy;
+			trace(notification.toString());
+			trace("la "+notification.getBody().toString()+" al");
 			
 			proxy.selectHandler(notification.getBody() as FileReference);
 		}

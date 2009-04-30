@@ -38,10 +38,8 @@ package heatmap
         override protected function initializeController( ) : void 
         {
             super.initializeController();            
-          	registerCommand( STARTUP, 
-          						heatmap.controler.startup.ApplicationStartupCommand  );
-         	registerCommand( LOAD_XML_DATA, 
-  					heatmap.controler.LoadXmlDataCommand  );
+          	registerCommand( STARTUP, heatmap.controler.startup.ApplicationStartupCommand  );
+         	registerCommand( LOAD_XML_DATA, heatmap.controler.LoadXmlDataCommand  );
           			
         }
         
