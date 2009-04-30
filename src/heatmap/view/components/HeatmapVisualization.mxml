@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
+	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
+		width="531" height="333" x="30" y="10" mapevent_mapready=""/>		
+	<mx:TextArea x="35" y="381" id="Affiche" width="380" height="103" editable="true" enabled="false"/>
+	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import heatmap.view.events.DocEvent;
+		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
+		public static const XML_DATA_LOADED:String                    = 'xmlDataLoaded';
+		
+		private var file:FileReference;
+		private var typeFilter:Array;
+		
+		
+		public function initFileChooser():void
+		{
+			/* Initialization part */
+			typeFilter = initializeTypeFilter();
+			file = new FileReference();
+			initializeListeners(file);
+		}
+		
+		private function initializeTypeFilter():Array
+		{
+			var documentFilter:FileFilter = new FileFilter("Documents (*.xml)", "*.xml");
+			return new Array(documentFilter);
+		}
+
+		/**
+		 * Add listeners to the file FileReference.
+		 * To add more Listeners, modify this function.
+		 */
+		private function initializeListeners(dispatcher:IEventDispatcher):void
+		{
+			dispatcher.addEventListener(Event.SELECT, selectHandler);
+			//dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+			//dispatcher.addEventListener(Event.CANCEL, cancelHandler);
+		}
+		
+		/**
+		 * Handle select event.
+		 */
+		private function selectHandler(event:Event):void
+		{
+			var fileRef:FileReference = event.target as FileReference;
+			sendEvent(LOAD_XML_DATA, fileRef);
+		}
+		
+		private function sendEvent(notificationType:String, body:Object = null):void
+		{
+			dispatchEvent(new DocEvent(notificationType, body));
+		}
+		
+		]]>
+	</mx:Script>
+</mx:Canvas>

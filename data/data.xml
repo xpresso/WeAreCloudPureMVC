@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<XMLFile>	
+		<data>
+			<adresse>18 Rue des Aigrettes, Roques, 31120</adresse>
+			<intensite>1</intensite>
+		</data>	
+		<data>
+			<adresse>Mexico, Mexico</adresse>
+			<intensite>1</intensite>
+		</data>
+		<data>
+			<adresse>Washington, United States of America</adresse>
+			<intensite>1</intensite>
+		</data>
+		<data>
+			<adresse>Las Vegas, California</adresse>
+			<intensite>1</intensite>
+		</data>
+		<data>
+			<adresse>Sidney, Australia</adresse>
+			<intensite>1</intensite>
+		</data>
+	</XMLFile>	
