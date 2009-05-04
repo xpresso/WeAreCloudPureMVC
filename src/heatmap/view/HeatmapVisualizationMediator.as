@@ -4,6 +4,8 @@ package heatmap.view
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
 	
+	import mx.collections.ArrayCollection;
+	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
@@ -26,15 +28,17 @@ package heatmap.view
 						
 		override public function listNotificationInterests():Array
 		{
-			return [ApplicationFacade.LOAD_XML_DATA];
+			return [ApplicationFacade.DATA_EXTRACTED];
 		}
 		
 		override public function handleNotification(notification:INotification):void
 		{
 			switch(notification.getName())
 			{
-				case ApplicationFacade.LOAD_XML_DATA:
-				
+				case ApplicationFacade.DATA_EXTRACTED:
+					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
+					
+					sendNotification(ApplicationFacade.GEOCODE_ADRESSES, pointsList);
 				
 				break;
 			}

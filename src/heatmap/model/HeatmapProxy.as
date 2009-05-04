@@ -4,6 +4,10 @@ package heatmap.model
 	
 	import heatmap.ApplicationFacade;
 	
+	import hmp.HeatmapPoint;
+	
+	import mx.collections.ArrayCollection;
+	
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
 	
@@ -34,11 +38,15 @@ package heatmap.model
 			if (fileRef != null)
 		    {
 		        var externalXML:XML = new XML(fileRef.data);
+		        var pointsList:ArrayCollection = new ArrayCollection();
 		        
-		        for(var i:int = 0; i < this.externalXML.data.length() ; i++)
+		        for(var i:int = 0; i < externalXML.data.length() ; i++)
 		        {
-		        	
+		        	pointsList.addItem(new HeatmapPoint(externalXML.data.adresse[i], 
+		        										externalXML.data.intensite[i]));
 		        }
+		        
+		        sendNotification(ApplicationFacade.DATA_EXTRACTED, pointsList);
 		    }
 		    else
 		    {

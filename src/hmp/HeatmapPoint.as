@@ -15,7 +15,7 @@ package hmp
 		/**
 		 * Constructor of the HeatmapPoint
 		 **/
-		public function HeatmapPoint(address:String, heatPoint:LatLng, intensity:Number)
+		public function HeatmapPoint(address:String, intensity:Number, heatPoint:LatLng = null)
 		{
 			this.address = address;
 			this.heatPoint = heatPoint;
