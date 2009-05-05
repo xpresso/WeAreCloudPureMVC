@@ -28,7 +28,7 @@ package heatmap.view
 						
 		override public function listNotificationInterests():Array
 		{
-			return [ApplicationFacade.DATA_EXTRACTED];
+			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE];
 		}
 		
 		override public function handleNotification(notification:INotification):void
@@ -36,9 +36,12 @@ package heatmap.view
 			switch(notification.getName())
 			{
 				case ApplicationFacade.DATA_EXTRACTED:
-					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
+					var pointsListToGeocode:ArrayCollection = notification.getBody() as ArrayCollection;
 					
-					sendNotification(ApplicationFacade.GEOCODE_ADRESSES, pointsList);
+					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
+					
+				case ApplicationFacade.GEOCODING_COMPLETE:
+					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
 				
 				break;
 			}

@@ -16,8 +16,8 @@ package heatmap
 		public static const LOAD_XML_DATA:String                      = 'loadXmlData';	
 		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
 		public static const DATA_EXTRACTED:String                     = 'dataExtracted';
-		public static const GEOCODE_ADRESSES:String                   = 'geocodeAdresses';
-		
+		public static const GEOCODE_ADDRESSES:String                  = 'geocodeAdresses';
+		public static const GEOCODING_COMPLETE:String                 = 'geocodingComplete';
 	   	
 		
 		public function ApplicationFacade( key:String )
@@ -44,7 +44,8 @@ package heatmap
             super.initializeController();            
           	registerCommand( STARTUP, heatmap.controler.startup.ApplicationStartupCommand  );
          	registerCommand( LOAD_XML_DATA, heatmap.controler.LoadXmlDataCommand  );
-         	registerCommand( EXTRACT_DATA_FROM_XML_FILE, heatmap.controler.ExtractDataFromXmlFileCommand);          			
+         	registerCommand( EXTRACT_DATA_FROM_XML_FILE, heatmap.controler.ExtractDataFromXmlFileCommand);  
+         	registerCommand( GEOCODE_ADDRESSES, heatmap.controler.GeocodeAddressesCommand);          			
         }
         
         /**

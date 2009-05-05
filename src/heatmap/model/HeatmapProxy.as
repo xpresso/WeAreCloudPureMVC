@@ -1,5 +1,6 @@
 package heatmap.model
 {
+	import flash.events.Event;
 	import flash.net.FileReference;
 	
 	import heatmap.ApplicationFacade;
@@ -53,5 +54,22 @@ package heatmap.model
 		        trace("fileRef is null!");
 		    }
 		}
+		
+		public function geocodeAddresses(pointsList:ArrayCollection):void
+		{
+			var geocodedPointsList:ArrayCollection = new ArrayCollection();
+			
+			geocodedPointsList.addEventListener("POULET", 
+				function(event:Event):void 
+				{
+					trace("Poulet");
+				});
+			
+			for (var i:int = 0 ; i < pointsList.length ; i++)
+			{
+				(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
+			} 						
+		}
+				
 	}
 }

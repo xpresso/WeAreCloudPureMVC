@@ -131,9 +131,7 @@ package michaelvandaniker.visualization
 		}
         public function set itemRadius(value:int):void
         {
-        	DebugUtil.whoCalledMe();
-        	trace("Itemradius");
-			if(_itemRadius != value)
+        	if(_itemRadius != value)
 			{
 				_itemRadius = value;
 				invalidateDisplayList();
