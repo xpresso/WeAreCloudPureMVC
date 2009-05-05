@@ -49,6 +49,7 @@ package heatmap.view
 			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
 		
+
 		private function onExtractDataFromXmlFile(event:DocEvent):void
 		{
 			sendNotification(ApplicationFacade.EXTRACT_DATA_FROM_XML_FILE, event.body);
