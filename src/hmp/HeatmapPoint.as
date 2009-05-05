@@ -16,30 +16,31 @@ package hmp
 	public class HeatmapPoint
 	{
 		private var address:String;
-		private var heatPoint:LatLng;
+		private var latLng:LatLng;
 		private var intensity:Number;
 		private var marker:Marker;
 		
+		public static const GEOCODEDDATA:String                  = 'geocodedData';
 		/**
 		 * Constructor of the HeatmapPoint
 		 **/
-		public function HeatmapPoint(address:String, intensity:Number, heatPoint:LatLng = null, marker:Marker = null)
+		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, marker:Marker = null)
 		{
 			this.address = address;
 			this.intensity = intensity;
-			this.heatPoint = heatPoint;
+			this.latLng = latLng;
 			this.marker = marker;
 		}
 			
 		
-		public function getHeatPoint():LatLng
+		public function getlatLng():LatLng
 		{
-			return this.heatPoint;	
+			return this.latLng;	
 		}
 		
-		public function setHeatPoint(heatPoint:LatLng):void
+		public function setLatLng(latLng:LatLng):void
 		{
-			this.heatPoint = heatPoint;	
+			this.latLng = latLng;	
 		}		
 		
 		/**
@@ -78,23 +79,27 @@ package hmp
 		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
 		{
 			var geocoder:ClientGeocoder = new ClientGeocoder();
-			
+            var heatMapPoint:Object = this;
+            
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS,
 				function(event:GeocodingEvent):void {
 					var placemarks:Array = event.response.placemarks;
 					if (placemarks.length > 0) 
 					{
-						this.marker = placemarks[0];
+						marker = new Marker(placemarks[0].point);
+						latLng = marker.getLatLng();
 						
-						
-						geocodedPointsList.addItem(this);
-						geocodedPointsList.dispatchEvent(new Event("POULET"));
+						geocodedPointsList.addItem(heatMapPoint);
+						geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
 					}
+					else
+						geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
 				});
 				
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,
 				function(event:GeocodingEvent):void {
 					trace("Geocoding failed");
+					geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
 				});
 				
 			geocoder.geocode(this.address);

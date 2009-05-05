@@ -1,9 +1,10 @@
 package heatmap
 {
 	import heatmap.controler.ExtractDataFromXmlFileCommand;
+	import heatmap.controler.GeocodeAddressesCommand;
 	import heatmap.controler.LoadXmlDataCommand;
 	import heatmap.controler.startup.ApplicationStartupCommand;
-
+	
 	import org.puremvc.as3.multicore.interfaces.IFacade;
 	import org.puremvc.as3.multicore.patterns.facade.Facade;
 
@@ -45,6 +46,7 @@ package heatmap
 			registerCommand( STARTUP, heatmap.controler.startup.ApplicationStartupCommand  );
 			registerCommand( LOAD_XML_DATA, heatmap.controler.LoadXmlDataCommand  );
 			registerCommand( EXTRACT_DATA_FROM_XML_FILE, heatmap.controler.ExtractDataFromXmlFileCommand );
+			registerCommand( GEOCODE_ADDRESSES, heatmap.controler.GeocodeAddressesCommand );
 		}
 
 		/**

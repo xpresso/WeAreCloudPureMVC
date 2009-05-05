@@ -6,6 +6,10 @@
 
 	<mx:Script>
 		<![CDATA[
+			import com.google.maps.LatLng;
+		import michaelvandaniker.visualization.*;
+		import hmp.*;
+		
 		import heatmap.view.events.DocEvent;
 
 		import com.google.maps.controls.MapTypeControl;
@@ -22,6 +26,16 @@
 
 		private var file:FileReference;
 		private var typeFilter:Array;
+		
+				/**
+		 * The heatmap
+		 */
+		private var heatmap:HeatMap;
+		
+		/**
+		 * The overlay
+		 */
+		private var heatMapOverlay:GHeatMapOverlay;
 		
 		
 		public function initFileChooser():void
@@ -109,6 +123,29 @@
 
 			// Add a listener on mouse move.
 			this.map.addEventListener(MapMouseEvent.MOUSE_MOVE, onMouseMove);
+			
+			/* Heatmap */
+			this.heatmap = new HeatMap();
+			this.heatmap.transformationFunction = latLonToPoint;
+			this.heatmap.weightFunction = intensityToWeight;
+			this.heatmap.gradientArray = GradientDictionary.RAINBOW;			
+			
+			this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
+			this.map.addOverlay(this.heatMapOverlay);
+		}
+		
+		public function get Heatmap():HeatMap
+		{
+			return this.heatmap;
+		}
+		private function latLonToPoint(o:Object):Object
+		{
+			return map.fromLatLngToViewport((o as HeatmapPoint).getlatLng() as LatLng);
+		}
+
+		private function intensityToWeight(o:Object):Object
+		{
+			return ((o as HeatmapPoint).getIntensity() as Number);
 		}
 
 		/**

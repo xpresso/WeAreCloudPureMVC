@@ -36,13 +36,14 @@ package heatmap.view
 			switch(notification.getName())
 			{
 				case ApplicationFacade.DATA_EXTRACTED:
-					var pointsListToGeocode:ArrayCollection = notification.getBody() as ArrayCollection;
-					
+					var pointsListToGeocode:ArrayCollection = notification.getBody() as ArrayCollection;					
 					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
-					
+				break;
+				
 				case ApplicationFacade.GEOCODING_COMPLETE:
 					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
-				
+					trace("Geocoding notification handled: "+pointsList.length);
+					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsList;
 				break;
 			}
 		}

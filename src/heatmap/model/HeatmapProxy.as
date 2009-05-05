@@ -58,11 +58,15 @@ package heatmap.model
 		public function geocodeAddresses(pointsList:ArrayCollection):void
 		{
 			var geocodedPointsList:ArrayCollection = new ArrayCollection();
+			var count:int = 0;
 			
-			geocodedPointsList.addEventListener("POULET", 
+			geocodedPointsList.addEventListener(HeatmapPoint.GEOCODEDDATA, 
 				function(event:Event):void 
 				{
-					trace("Poulet");
+					count++;
+					trace(count +" || "+pointsList.length+" || "+geocodedPointsList.length);
+					if ( count == pointsList.length )
+						sendNotification(ApplicationFacade.GEOCODING_COMPLETE, geocodedPointsList);
 				});
 			
 			for (var i:int = 0 ; i < pointsList.length ; i++)
