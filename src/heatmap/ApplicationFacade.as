@@ -21,8 +21,8 @@ package heatmap
 			super(key);	
 		}
 		
-		public var application:Heatmap
-		; 
+		public var application:Heatmap;
+		 
         /**
          * Singleton ApplicationFacade Factory Method
          */

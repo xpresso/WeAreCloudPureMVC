@@ -44,5 +44,8 @@ package heatmap.view
 			trace("Mediator "+event.body.toString()+" Mediator");
 			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
+		
+		
+		
 	}
 }
