@@ -17,6 +17,8 @@ package michaelvandaniker.visualization
     import mx.styles.CSSStyleDeclaration;
     import mx.styles.StyleManager;
 
+	import com.jonathanbranam.flashphysiology.debug.*;
+	
 	[Style(name="backgroundColor", type="uint", format="Color", inherit="no")]
 	[Style(name="backgroundAlpha", type="Number", inherit="no")]
 
@@ -129,6 +131,8 @@ package michaelvandaniker.visualization
 		}
         public function set itemRadius(value:int):void
         {
+        	DebugUtil.whoCalledMe();
+        	trace("Itemradius");
 			if(_itemRadius != value)
 			{
 				_itemRadius = value;

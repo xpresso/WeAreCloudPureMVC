@@ -4,6 +4,8 @@ package heatmap.view
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
 	
+	import mx.collections.ArrayCollection;
+	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
@@ -16,6 +18,7 @@ package heatmap.view
 		{
 			super(NAME, viewComponent);
 			heatmapVisualization.addEventListener(HeatmapVisualization.LOAD_XML_DATA, onLoadXmlData);
+			heatmapVisualization.addEventListener(HeatmapVisualization.EXTRACT_DATA_FROM_XML_FILE, onExtractDataFromXmlFile);
 		}
 		
 		public function get heatmapVisualization():HeatmapVisualization
@@ -25,15 +28,17 @@ package heatmap.view
 						
 		override public function listNotificationInterests():Array
 		{
-			return [ApplicationFacade.XML_DATA_LOADED];
+			return [ApplicationFacade.DATA_EXTRACTED];
 		}
 		
 		override public function handleNotification(notification:INotification):void
 		{
 			switch(notification.getName())
 			{
-				case ApplicationFacade.XML_DATA_LOADED:
-				
+				case ApplicationFacade.DATA_EXTRACTED:
+					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
+					
+					sendNotification(ApplicationFacade.GEOCODE_ADRESSES, pointsList);
 				
 				break;
 			}
@@ -41,11 +46,13 @@ package heatmap.view
 		
 		private function onLoadXmlData(event:DocEvent):void
 		{
-			trace("Mediator "+event.body.toString()+" Mediator");
 			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
 		
-		
-		
+
+		private function onExtractDataFromXmlFile(event:DocEvent):void
+		{
+			sendNotification(ApplicationFacade.EXTRACT_DATA_FROM_XML_FILE, event.body);
+		}
 	}
 }
