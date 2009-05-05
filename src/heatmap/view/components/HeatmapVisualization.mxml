@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
 	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
-		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady()"/>		
+		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>		
 	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
 	
 	<mx:Script>
 		<![CDATA[
 		import heatmap.view.events.DocEvent;
+		
+		import com.google.maps.controls.MapTypeControl;
+		import com.google.maps.controls.ScaleControl;
+		import com.google.maps.controls.ZoomControl;
+		import com.google.maps.controls.ZoomControlOptions;
+		import com.google.maps.controls.PositionControl;
+		import com.google.maps.controls.PositionControlOptions;
+		
+		
 		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
 		
@@ -61,6 +70,44 @@
 		{
 			dispatchEvent(new DocEvent(notificationType, body));
 		}
+		
+		/**
+		 * Called when the map's load is finished
+		 * Add google's tools like zoom, position.
+		 */
+		private function onMapReady(event:Event):void
+		{
+			// Zoom on the map
+			var zoom:ZoomControl;
+			// Scale on the map
+			var scale:ScaleControl;
+			// Position control on the map
+			var position:PositionControl;
+			
+			var mapContr:MapTypeControl;
+		//	var mapContrOpt:MapTypeControlOptions;
+			
+			//zoom
+			zoom = new ZoomControl(new ZoomControlOptions());
+			map.addControl(zoom);
+			map.enableScrollWheelZoom();
+			map.enableContinuousZoom();
+			
+			//echelle			
+			scale = new ScaleControl();
+			map.addControl(scale);
+			
+			//fleches
+			position = new PositionControl(new PositionControlOptions());
+			map.addControl(position);
+
+			// Vue en relief, satellite etc.
+ 			mapContr = new MapTypeControl();  
+ 			map.addControl(mapContr);       
+             
+            //item radius
+          //  slider.value = heatmap.itemRadius;
+		} 
 		
 		]]>
 	</mx:Script>
