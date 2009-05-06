@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
 	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
-		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>		
+		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>
 	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
-	
+
 	<mx:Script>
 		<![CDATA[
-		import heatmap.view.events.DocEvent;
+			import com.google.maps.overlays.Marker;
+		import com.google.maps.LatLng;
+		import michaelvandaniker.visualization.*;
+		import hmp.*;
 		
+		import heatmap.view.events.DocEvent;
+
 		import com.google.maps.controls.MapTypeControl;
 		import com.google.maps.controls.ScaleControl;
 		import com.google.maps.controls.ZoomControl;
 		import com.google.maps.controls.ZoomControlOptions;
 		import com.google.maps.controls.PositionControl;
 		import com.google.maps.controls.PositionControlOptions;
-		
-		
+		import com.google.maps.MapMouseEvent;
+
+
 		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
-		
+
 		private var file:FileReference;
 		private var typeFilter:Array;
+		
+		/**
+		 * The heatmap
+		 */
+		private var heatmap:HeatMap;
+		
+		/**
+		 * The overlay
+		 */
+		private var heatMapOverlay:GHeatMapOverlay;
 		
 		
 		public function initFileChooser():void
 		{
-			/* Initialization part */
 			typeFilter = initializeTypeFilter();
 			file = new FileReference();
 			initializeListeners(file);
 		}
-		
+
 		private function initializeTypeFilter():Array
 		{
 			var documentFilter:FileFilter = new FileFilter("Documents (*.xml)", "*.xml");
@@ -45,7 +60,6 @@
 		{
 			dispatcher.addEventListener(Event.SELECT, selectHandler);
 			dispatcher.addEventListener(Event.COMPLETE, completeHandler);
-			//dispatcher.addEventListener(Event.CANCEL, cancelHandler);
 		}
 		
 		/**
@@ -56,21 +70,21 @@
 			var fileRef:FileReference = event.target as FileReference;
 			sendEvent(LOAD_XML_DATA, fileRef);
 		}
-		
+
 		/**
 		 * Handle select event.
 		 */
 		private function completeHandler(event:Event):void
 		{
-			var fileRef:FileReference = event.target as FileReference;			
-			sendEvent(EXTRACT_DATA_FROM_XML_FILE, fileRef);		
+			var fileRef:FileReference = event.target as FileReference;
+			sendEvent(EXTRACT_DATA_FROM_XML_FILE, fileRef);
 		}
-		
+
 		private function sendEvent(notificationType:String, body:Object = null):void
 		{
 			dispatchEvent(new DocEvent(notificationType, body));
 		}
-		
+
 		/**
 		 * Called when the map's load is finished
 		 * Add google's tools like zoom, position.
@@ -83,32 +97,80 @@
 			var scale:ScaleControl;
 			// Position control on the map
 			var position:PositionControl;
-			
+
 			var mapContr:MapTypeControl;
-		//	var mapContrOpt:MapTypeControlOptions;
-			
-			//zoom
+			//var mapContrOpt:MapTypeControlOptions;
+
+			// Zoom
 			zoom = new ZoomControl(new ZoomControlOptions());
 			map.addControl(zoom);
 			map.enableScrollWheelZoom();
 			map.enableContinuousZoom();
-			
-			//echelle			
+
+			// Echelle, et l'anglais! :p
 			scale = new ScaleControl();
 			map.addControl(scale);
-			
-			//fleches
+
+			// Fleches
 			position = new PositionControl(new PositionControlOptions());
 			map.addControl(position);
 
 			// Vue en relief, satellite etc.
- 			mapContr = new MapTypeControl();  
- 			map.addControl(mapContr);       
-             
-            //item radius
-          //  slider.value = heatmap.itemRadius;
-		} 
+ 			mapContr = new MapTypeControl();
+ 			map.addControl(mapContr);
+
+            // Item radius
+			//slider.value = heatmap.itemRadius;
+
+			// Add a listener on mouse move.
+			this.map.addEventListener(MapMouseEvent.MOUSE_MOVE, onMouseMove);
+			
+			/* Heatmap */
+			this.heatmap = new HeatMap();
+			this.heatmap.transformationFunction = latLonToPoint;
+			this.heatmap.weightFunction = intensityToWeight;
+			this.heatmap.gradientArray = GradientDictionary.RAINBOW;			
+			
+			this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
+			this.map.addOverlay(this.heatMapOverlay);
+		}
 		
+		public function get Heatmap():HeatMap
+		{
+			return this.heatmap;
+		}
+		private function latLonToPoint(o:Object):Object
+		{
+			return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
+		}
+
+		private function intensityToWeight(o:Object):Object
+		{
+			return ((o as HeatmapPoint).intensity as Number);
+		}
+
+		/**
+		 * Handle MOUSE_MOVE event.
+		 */
+		private function onMouseMove(event:MapMouseEvent):void
+		{
+			if (Heatmap.dataProvider != null)
+			{
+				for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				{
+					var marker:Marker = heatmap.dataProvider[i].marker;
+					if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
+					{
+						marker.visible = true;
+					}
+					else
+					{
+						marker.visible = false;
+					}
+				}
+			}
+		}
+
 		]]>
 	</mx:Script>
 </mx:Canvas>

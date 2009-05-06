@@ -4,17 +4,16 @@
 	xmlns:maps="com.google.maps.*"
 	xmlns:michaelvandaniker="michaelvandaniker.visualization.*"
 	xmlns:ourcomponents="heatmap.view.components.*">
-	
+
 	<ourcomponents:HeatmapVisualization id="heatmapVisualization" width="100%" height="100%" />
-	
-		
+
+
 	<mx:Script>
 	<![CDATA[
 		import heatmap.ApplicationFacade;
-		
+
 		private var facade:ApplicationFacade = ApplicationFacade.getInstance(ApplicationFacade.NAME);
-		
 	]]>
 	</mx:Script>
-	
+
 </mx:Application>
