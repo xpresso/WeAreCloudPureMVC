@@ -52,7 +52,7 @@ package heatmap.view
 					/* Add a marker for each point.. */
 					for(var i:int = 0; i < pointsList.length; i++)
 					{
-						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].getLatLng());
+						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
 						marker.visible = false;
 						/* ..to the points list, */
 						(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].setMarker(marker);

@@ -141,12 +141,12 @@
 		}
 		private function latLonToPoint(o:Object):Object
 		{
-			return map.fromLatLngToViewport((o as HeatmapPoint).getLatLng() as LatLng);
+			return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
 		}
 
 		private function intensityToWeight(o:Object):Object
 		{
-			return ((o as HeatmapPoint).getIntensity() as Number);
+			return ((o as HeatmapPoint).intensity as Number);
 		}
 
 		/**
@@ -158,7 +158,7 @@
 			{
 				for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
 				{
-					var marker:Marker = heatmap.dataProvider[i].getMarker();
+					var marker:Marker = heatmap.dataProvider[i].marker;
 					if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
 					{
 						marker.visible = true;

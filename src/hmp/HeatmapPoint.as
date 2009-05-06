@@ -15,10 +15,10 @@ package hmp
 	 **/
 	public class HeatmapPoint
 	{
-		private var address:String;
-		private var latLng:LatLng;
-		private var intensity:Number;
-		private var marker:Marker;
+		private var _address:String;
+		private var _latLng:LatLng;
+		private var _intensity:Number;
+		private var _marker:Marker;
 		
 		public static const GEOCODEDDATA:String                  = 'geocodedData';
 		/**
@@ -26,54 +26,54 @@ package hmp
 		 **/
 		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, marker:Marker = null)
 		{
-			this.address = address;
-			this.intensity = intensity;
-			this.latLng = latLng;
-			this.marker = marker;
+			this._address = address;
+			this._intensity = intensity;
+			this._latLng = latLng;
+			this._marker = marker;
 		}
-			
-		
-		public function getLatLng():LatLng
+
+
+		public function get latLng():LatLng
 		{
-			return this.latLng;	
+			return this._latLng;	
 		}
 		
-		public function setLatLng(latLng:LatLng):void
+		public function set latLng(latLng:LatLng):void
 		{
-			this.latLng = latLng;	
+			this._latLng = latLng;	
 		}		
 		
 		/**
 		 * Accessor on the Number itensity
 		 **/
-		public function getIntensity():Number
+		public function get intensity():Number
 		{
-			return this.intensity;
+			return this._intensity;
 		}
 		
-		public function setIntensity(intensity:Number):void
+		public function set intensity(intensity:Number):void
 		{
-			this.intensity = intensity;
+			this._intensity = intensity;
 		}
 		
-		public function getAddress():String
+		public function get address():String
 		{
-			return this.address;
+			return this._address;
 		}
 		
-		public function setAddress(address:String):void
+		public function set address(address:String):void
 		{
-			this.address = address;
+			this._address = address;
 		}
 		
-		public function getMarker():Marker
+		public function get marker():Marker
 		{
-			return this.marker;
+			return this._marker;
 		}
 		
-		public function setMarker(marker:Marker):void
+		public function set marker(marker:Marker):void
 		{
-			this.marker = marker;
+			this._marker = marker;
 		}
 		
 		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
