@@ -1,5 +1,10 @@
 package heatmap.model
 {
+	import com.google.maps.LatLng;
+	
+	import flash.events.Event;
+	import flash.net.FileReference;
+	
 	import heatmap.ApplicationFacade;
 	
 	import hmp.HeatmapPoint;
@@ -8,9 +13,6 @@ package heatmap.model
 	
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
-
-	import flash.events.Event;	
-	import flash.net.FileReference;
 
 
 	public class HeatmapProxy extends Proxy implements IProxy
@@ -47,8 +49,12 @@ package heatmap.model
 //		        	pointsList.addItem(new HeatmapPoint("249 Rue Adrien Proby, Montpellier, 34090", 1));
 //		        	pointsList.addItem(new HeatmapPoint("28 Chemin des cavaliers, Bernis, 30620", 2));
 //		        	pointsList.addItem(new HeatmapPoint("18 Rue des Aigrettes, Roques, 31120", 3));
-		        	pointsList.addItem(new HeatmapPoint(externalXML.data.adresse[i], 
-		        										externalXML.data.intensite[i]));
+		        	pointsList.addItem(
+		        		new HeatmapPoint(
+		        			"10 Avenue Foch", 
+		        			externalXML.data.intensite[i],
+		        			new LatLng(externalXML.data.lat[i],externalXML.data.long[i])));
+		        	//To delete new Latlng();
 		        }
 		        sendNotification(ApplicationFacade.DATA_EXTRACTED, pointsList);
 		    }

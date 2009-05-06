@@ -83,13 +83,14 @@ package hmp
             
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS,
 				function(event:GeocodingEvent):void {
+					geocodedPointsList.addItem(heatMapPoint); //TO delete
 					var placemarks:Array = event.response.placemarks;
 					if (placemarks.length > 0) 
 					{
 						marker = new Marker(placemarks[0].point);
-						latLng = marker.getLatLng();
+						//latLng = marker.getLatLng(); //To uncomment
 						
-						geocodedPointsList.addItem(heatMapPoint);
+						//geocodedPointsList.addItem(heatMapPoint); //To uncomment
 						geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
 					}
 					else
@@ -99,6 +100,7 @@ package hmp
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,
 				function(event:GeocodingEvent):void {
 					trace("Geocoding failed");
+					geocodedPointsList.addItem(heatMapPoint); //TO delete
 					geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
 				});
 				
