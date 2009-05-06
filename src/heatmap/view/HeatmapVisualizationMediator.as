@@ -55,7 +55,7 @@ package heatmap.view
 						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
 						marker.visible = false;
 						/* ..to the points list, */
-						(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].setMarker(marker);
+						(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].marker = marker;
 						/* and to the map. */
 						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
 					}

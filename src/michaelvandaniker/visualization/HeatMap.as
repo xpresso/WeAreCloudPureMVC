@@ -33,6 +33,7 @@ package michaelvandaniker.visualization
 			mouseEnabled = false;
 			cacheAsBitmap = true;
 			gradientArray = GradientDictionary.THERMAL;
+			alpha = .7;
 		}
 		
 		/**
@@ -345,7 +346,12 @@ package michaelvandaniker.visualization
             // from blue to black as you move from the inside of the circle out.
             var heatMapShape:Shape = new Shape();
             heatMapShape.graphics.clear();
-            heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,[centerValue,0],[0.6,0.3],[0,255],m);
+            //heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,[centerValue,0],[0.6,0.3],[0,255],m);
+             heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,
+            										[centerValue,0],    // les couleurs prises
+            										[1,1],
+            										[0,255],
+            										m);
             heatMapShape.graphics.drawCircle(0,0,itemRadius);
             heatMapShape.graphics.endFill();
            

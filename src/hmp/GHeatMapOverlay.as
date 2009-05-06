@@ -52,7 +52,8 @@ package hmp
 		{
 			if (zoom)
 			{
-				heatMap.itemRadius = Math.max(6, Math.pow( pane.map.getZoom(),1.5));
+				//heatMap.itemRadius = Math.max(6, Math.pow( pane.map.getZoom(),1.5));
+				heatMap.itemRadius = Math.max(10,Math.pow(pane.map.getZoom(),1.5));
 			}
 			
 			// positioned at (0,0) by default
