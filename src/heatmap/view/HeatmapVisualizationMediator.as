@@ -2,11 +2,11 @@ package heatmap.view
 {
 	import com.google.maps.overlays.Marker;
 	
+	import flash.events.MouseEvent;
+	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
-	
-	import hmp.HeatmapPoint;
 	
 	import mx.collections.ArrayCollection;
 	
