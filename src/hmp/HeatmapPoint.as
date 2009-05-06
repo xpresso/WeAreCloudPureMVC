@@ -6,6 +6,7 @@ package hmp
 	import com.google.maps.services.GeocodingEvent;
 	
 	import flash.events.Event;
+	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
 	
