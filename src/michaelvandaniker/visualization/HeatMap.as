@@ -347,10 +347,10 @@ package michaelvandaniker.visualization
             var heatMapShape:Shape = new Shape();
             heatMapShape.graphics.clear();
             //heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,[centerValue,0],[0.6,0.3],[0,255],m);
-             heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,
+             heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,//GradientType.LINEAR or GradientType.RADIAL
             										[centerValue,0],    // les couleurs prises
-            										[1,1],
-            										[0,255],
+            										[1,1],//alphas: An array of alpha values for the corresponding colors in the colors array; valid values are 0 to 1
+            										[200,255],//ratios: An array of color distribution ratios; valid values are 0 to 255. This value defines the percentage of the width where the color is sampled at 100%
             										m);
             heatMapShape.graphics.drawCircle(0,0,itemRadius);
             heatMapShape.graphics.endFill();
