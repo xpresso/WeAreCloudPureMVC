@@ -33,7 +33,7 @@ package hmp
 		}
 			
 		
-		public function getlatLng():LatLng
+		public function getLatLng():LatLng
 		{
 			return this.latLng;	
 		}

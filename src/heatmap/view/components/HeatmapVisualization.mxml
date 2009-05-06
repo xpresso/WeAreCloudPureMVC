@@ -6,7 +6,8 @@
 
 	<mx:Script>
 		<![CDATA[
-			import com.google.maps.LatLng;
+			import com.google.maps.overlays.Marker;
+		import com.google.maps.LatLng;
 		import michaelvandaniker.visualization.*;
 		import hmp.*;
 		
@@ -27,7 +28,7 @@
 		private var file:FileReference;
 		private var typeFilter:Array;
 		
-				/**
+		/**
 		 * The heatmap
 		 */
 		private var heatmap:HeatMap;
@@ -140,7 +141,7 @@
 		}
 		private function latLonToPoint(o:Object):Object
 		{
-			return map.fromLatLngToViewport((o as HeatmapPoint).getlatLng() as LatLng);
+			return map.fromLatLngToViewport((o as HeatmapPoint).getLatLng() as LatLng);
 		}
 
 		private function intensityToWeight(o:Object):Object
@@ -153,10 +154,21 @@
 		 */
 		private function onMouseMove(event:MapMouseEvent):void
 		{
-//			for(var i:int = 0; i < this.markersList.length; i++)
-//			{
-//				this.markersList[i].dispatchEvent(event);
-//			}
+			if (Heatmap.dataProvider != null)
+			{
+				for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				{
+					var marker:Marker = heatmap.dataProvider[i].getMarker();
+					if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
+					{
+						marker.visible = true;
+					}
+					else
+					{
+						marker.visible = false;
+					}
+				}
+			}
 		}
 
 		]]>

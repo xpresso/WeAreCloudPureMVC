@@ -1,8 +1,12 @@
 package heatmap.view
 {
+	import com.google.maps.overlays.Marker;
+	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
+	
+	import hmp.HeatmapPoint;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -44,6 +48,17 @@ package heatmap.view
 					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
 					trace("Geocoding notification handled: "+pointsList.length);
 					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsList;
+
+					/* Add a marker for each point.. */
+					for(var i:int = 0; i < pointsList.length; i++)
+					{
+						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].getLatLng());
+						marker.visible = false;
+						/* ..to the points list, */
+						(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].setMarker(marker);
+						/* and to the map. */
+						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
+					}
 				break;
 			}
 		}
