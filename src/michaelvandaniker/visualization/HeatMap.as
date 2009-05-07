@@ -102,6 +102,36 @@ package michaelvandaniker.visualization
 		 */ 
 		protected var centerValue:Number;
 		
+		
+		
+		public function get intensityValue1():int
+        {
+        	return _intensityValue1;
+        }
+        public function set intensityValue1(value:int):void
+        {
+        	if(_intensityValue1 != value)
+        	{
+	        	_intensityValue1 = value;
+	        	invalidateDisplayList();
+	        }
+        }
+		private var _intensityValue1:int = 0;
+		
+		public function get intensityValue2():int
+        {
+        	return _intensityValue2;
+        }
+        public function set intensityValue2(value:int):void
+        {
+        	if(_intensityValue2 != value)
+        	{
+	        	_intensityValue2 = value;
+	        	invalidateDisplayList();
+	        }
+        }
+		private var _intensityValue2:int = 255;
+		
         /**
          * An array of 256 colors used to color the heat map. Colors towards the
          * end of the array represent hotter regions of the map.
@@ -320,7 +350,7 @@ package michaelvandaniker.visualization
 			{
 				maxPointsInOnePlace = Math.max(maxPointsInOnePlace,pointDictionary[key]);
 			}
-			var tempCenterValue:Number = 255 / maxPointsInOnePlace;//Math.max(19, 255 / maxPointsInOnePlace);
+			var tempCenterValue:Number = Math.max(19, 255 / maxPointsInOnePlace);
 			if(tempCenterValue != centerValue)
 				centerValue = tempCenterValue;
         }
@@ -350,8 +380,7 @@ package michaelvandaniker.visualization
             heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,//GradientType.LINEAR or GradientType.RADIAL
             										[centerValue,0],    // les couleurs prises
             										[1,1],//alphas: An array of alpha values for the corresponding colors in the colors array; valid values are 0 to 1
-            										[0,255],//ratios: An array of color distribution ratios; valid values are 0 to 255. This value defines the percentage of the width where the color is sampled at 100%
-            					// Attention, quand les jeux de données comprendront bcp plus de valeurs il faudra baisser le nombre 200 !!!
+            										[_intensityValue1,_intensityValue2],//ratios: An array of color distribution ratios; valid values are 0 to 255. This value defines the percentage of the width where the color is sampled at 100%
             										m);
             heatMapShape.graphics.drawCircle(0,0,itemRadius);
             heatMapShape.graphics.endFill();

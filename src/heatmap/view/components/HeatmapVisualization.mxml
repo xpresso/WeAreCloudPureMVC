@@ -1,22 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
-	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
-		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>
-	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
-	<mx:HSlider x="134" y="419"	
-    				id="opacitySlider" 
-    				minimum="0" 
-    				maximum="1" 
-    				value="0.7"	
-    				dataTipPlacement="top" 
-    				tickColor="black" 
-		            tickInterval="10" 
-		            labels="['0%','100%']" 
-		            allowTrackClick="true" 
-		            liveDragging="true"
-    				snapInterval="0.01" 
-    				change="this.Heatmap.alpha = opacitySlider.value;"
-    					/>
+<mx:Canvas 	xmlns:mx="http://www.adobe.com/2006/mxml"
+			xmlns:flexlib="flexlib.controls.*" 
+			xmlns:maps="com.google.maps.*" 
+			width="100%" height="100%" creationComplete="initFileChooser()">
+	<mx:Panel width="800" height="550" x="187" y="4" title="Heatmap - We are cloud">
+        <mx:HBox width="100%" height="100%">
+        	<mx:VBox width="20%" height="100%" x="10">
+        		<mx:Button label="Play" width="130" height="24"/>
+        		<mx:List id="dataList" width="100%" height="100%" allowMultipleSelection="true" editable="false" backgroundColor="#D1DFDD"/>        		
+            </mx:VBox>        	         		
+        	<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>       
+        </mx:HBox>
+        <mx:ControlBar>
+            <mx:Spacer width="100%"/>
+
+				<mx:HSlider x="134" y="419"	
+			    				id="opacitySlider" 
+			    				minimum="0" 
+			    				maximum="1" 
+			    				value="0.7"	
+			    				dataTipPlacement="top" 
+			    				tickColor="black" 
+					            tickInterval="10" 
+					            labels="['0%','100%']" 
+					            allowTrackClick="true" 
+					            liveDragging="true"
+			    				snapInterval="0.01" 
+			    				change="this.Heatmap.alpha = opacitySlider.value;"/>
+                        <flexlib:HSlider  
+                        	id="intencitySlider" 
+                            trackHighlightSkin="flexlib.skins.SliderHighlightSkin"
+                            allowTrackClick="true" allowThumbOverlap="true" 
+                            liveDragging="true" 
+                            showDataTip="true"  dataTipPlacement="top"  dataTipOffset="3" 
+                            showTrackHighlight="true"
+                            thumbCount="2"  width="200" 
+                            values="[0, 255]"
+                            minimum="0" maximum="255" snapInterval="1"
+                            change="this.Heatmap.intensityValue1 = intencitySlider.values[0];
+                            		this.Heatmap.intensityValue2 = intencitySlider.values[1];"
+                        />
+
+
+                       		
+            <mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+        </mx:ControlBar>
+    </mx:Panel>
 
 	<mx:Script>
 		<![CDATA[
@@ -24,7 +53,6 @@
 		import com.google.maps.LatLng;
 		import michaelvandaniker.visualization.*;
 		import hmp.*;
-		
 		import heatmap.view.events.DocEvent;
 
 		import com.google.maps.controls.MapTypeControl;
@@ -142,7 +170,8 @@
 			/* Heatmap */
 			this.heatmap = new HeatMap();
 			this.heatmap.transformationFunction = latLonToPoint;
-			this.heatmap.weightFunction = intensityToWeight;			
+			this.heatmap.weightFunction = intensityToWeight;
+			this.heatmap.gradientArray = GradientDictionary.RAINBOW;			
 			
 			this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
 			this.map.addOverlay(this.heatMapOverlay);
