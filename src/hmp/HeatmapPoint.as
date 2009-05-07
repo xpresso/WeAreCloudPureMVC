@@ -6,7 +6,6 @@ package hmp
 	import com.google.maps.services.GeocodingEvent;
 	
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -17,46 +16,28 @@ package hmp
 	public class HeatmapPoint
 	{
 		private var _address:String;
-		private var _latLng:LatLng;
 		private var _intensity:Number;
+		private var _latLng:LatLng;
+		private var _date:String;
+		private var _libelle:String;
 		private var _marker:Marker;
 		
 		public static const GEOCODEDDATA:String                  = 'geocodedData';
 		/**
 		 * Constructor of the HeatmapPoint
 		 **/
-		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, marker:Marker = null)
+		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, 
+									 date:String = null, libelle:String = null, marker:Marker = null)
 		{
 			this._address = address;
 			this._intensity = intensity;
 			this._latLng = latLng;
+			this._date = date;
+			this._libelle = libelle;
 			this._marker = marker;
 		}
 
 
-		public function get latLng():LatLng
-		{
-			return this._latLng;	
-		}
-		
-		public function set latLng(latLng:LatLng):void
-		{
-			this._latLng = latLng;	
-		}		
-		
-		/**
-		 * Accessor on the Number itensity
-		 **/
-		public function get intensity():Number
-		{
-			return this._intensity;
-		}
-		
-		public function set intensity(intensity:Number):void
-		{
-			this._intensity = intensity;
-		}
-		
 		public function get address():String
 		{
 			return this._address;
@@ -67,6 +48,25 @@ package hmp
 			this._address = address;
 		}
 		
+		public function get intensity():Number
+		{
+			return this._intensity;
+		}
+		
+		public function set intensity(intensity:Number):void
+		{
+			this._intensity = intensity;
+		}
+		
+		public function get latLng():LatLng
+		{
+			return this._latLng;	
+		}
+		
+		public function set latLng(latLng:LatLng):void
+		{
+			this._latLng = latLng;	
+		}
 		public function get marker():Marker
 		{
 			return this._marker;
@@ -75,6 +75,26 @@ package hmp
 		public function set marker(marker:Marker):void
 		{
 			this._marker = marker;
+		}
+		
+		public function get date():String
+		{
+			return this._date;
+		}
+		
+		public function set date(date:String):void
+		{
+			this._date = date;
+		}
+		
+		public function get libelle():String
+		{
+			return this._libelle;
+		}
+		
+		public function set libelle(libelle:String):void
+		{
+			this._libelle = libelle;
 		}
 		
 		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
