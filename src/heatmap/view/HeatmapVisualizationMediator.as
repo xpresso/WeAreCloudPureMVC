@@ -2,8 +2,6 @@ package heatmap.view
 {
 	import com.google.maps.overlays.Marker;
 	
-	import flash.events.MouseEvent;
-	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
@@ -23,6 +21,7 @@ package heatmap.view
 			super(NAME, viewComponent);
 			heatmapVisualization.addEventListener(HeatmapVisualization.LOAD_XML_DATA, onLoadXmlData);
 			heatmapVisualization.addEventListener(HeatmapVisualization.EXTRACT_DATA_FROM_XML_FILE, onExtractDataFromXmlFile);
+			heatmapVisualization.addEventListener(HeatmapVisualization.APPLY_CRITERIA, onApplyCriteria);
 		}
 		
 		public function get heatmapVisualization():HeatmapVisualization
@@ -32,21 +31,25 @@ package heatmap.view
 						
 		override public function listNotificationInterests():Array
 		{
-			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE];
+			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE, ApplicationFacade.CRITERIA_APPLICATION_COMPLETE];
 		}
 		
 		override public function handleNotification(notification:INotification):void
 		{
 			switch(notification.getName())
 			{
-				case ApplicationFacade.DATA_EXTRACTED:
-					var pointsListToGeocode:ArrayCollection = notification.getBody() as ArrayCollection;					
+				case ApplicationFacade.DATA_EXTRACTED:				
+					var pointsListToGeocode:ArrayCollection = notification.getBody()[0] as ArrayCollection;
+					var criteriaList:ArrayCollection = notification.getBody()[1] as ArrayCollection;									
+					
+					(this.viewComponent as HeatmapVisualization).dataList.dataProvider = criteriaList;
 					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
 				break;
 				
 				case ApplicationFacade.GEOCODING_COMPLETE:
 					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
-					trace("Geocoding notification handled: "+pointsList.length);
+
+					(this.viewComponent as HeatmapVisualization).pointsList = pointsList;
 					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsList;
 
 					/* Add a marker for each point.. */
@@ -60,6 +63,11 @@ package heatmap.view
 						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
 					}
 				break;
+				
+				case  ApplicationFacade.CRITERIA_APPLICATION_COMPLETE:
+					var pointsSubList:ArrayCollection = notification.getBody() as ArrayCollection;
+					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsSubList;
+				break;
 			}
 		}
 		
@@ -72,6 +80,11 @@ package heatmap.view
 		private function onExtractDataFromXmlFile(event:DocEvent):void
 		{
 			sendNotification(ApplicationFacade.EXTRACT_DATA_FROM_XML_FILE, event.body);
+		}
+		
+		private function onApplyCriteria(event:DocEvent):void
+		{
+			sendNotification(ApplicationFacade.APPLY_CRITERIA, event.body);
 		}
 	}
 }

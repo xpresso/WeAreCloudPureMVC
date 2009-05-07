@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:maps="com.google.maps.*"  width="100%" height="100%" creationComplete="initFileChooser()">
 	<mx:Panel width="800" height="550" x="187" y="4" title="Heatmap - We are cloud">
-        <mx:HBox width="100%" height="100%">
+        <mx:HBox width="100%" height="100%" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
         	<mx:VBox width="20%" height="100%" x="10">
-        		<mx:Button label="Play" width="130" height="24"/>
+        		<mx:Button label="Play" width="100%" height="24" click="applyCriteria()"/>
         		<mx:List id="dataList" width="100%" height="100%" allowMultipleSelection="true" editable="false" backgroundColor="#D1DFDD"/>        		
             </mx:VBox>        	         		
         	<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>       
@@ -16,6 +16,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
 			import com.google.maps.overlays.Marker;
 		import com.google.maps.LatLng;
 		import michaelvandaniker.visualization.*;
@@ -34,10 +35,12 @@
 
 		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
+		public static const APPLY_CRITERIA:String                     = 'applyCriteria';
 
 		private var file:FileReference;
 		private var typeFilter:Array;
 		
+		public var pointsList:ArrayCollection = new ArrayCollection();
 		/**
 		 * The heatmap
 		 */
@@ -49,7 +52,7 @@
 		private var heatMapOverlay:GHeatMapOverlay;
 		
 		
-		public function initFileChooser():void
+		private function initFileChooser():void
 		{
 			typeFilter = initializeTypeFilter();
 			file = new FileReference();
@@ -88,6 +91,11 @@
 		{
 			var fileRef:FileReference = event.target as FileReference;
 			sendEvent(EXTRACT_DATA_FROM_XML_FILE, fileRef);
+		}
+		
+		private function applyCriteria():void
+		{			
+			sendEvent(APPLY_CRITERIA, [pointsList, dataList.selectedItems]);			
 		}
 
 		private function sendEvent(notificationType:String, body:Object = null):void

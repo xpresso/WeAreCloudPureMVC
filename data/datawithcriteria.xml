@@ -1,0 +1,10 @@
+<?xmlversion="1.0"encoding="UTF-8"?>
+	<XMLFile>	
+		<data><long>-94.239816</long><lat>36.350885</lat><intensite>1</intensite><date>2006</date><libelle>Wii</libelle></data>
+		<data><long>-91.732235</long><lat>35.222133</lat><intensite>1</intensite><date>2005</date><libelle>Sony</libelle></data>	
+		<data><long>-95.773672</long><lat>31.740062</lat><intensite>1</intensite><date>11 Septembre 2005</date><libelle>Wii</libelle></data>
+		<data><long>-86.847144</long><lat>34.169426</lat><intensite>1</intensite><date>11 Septembre 2005</date><libelle>Sony</libelle></data>
+		<data><long>-91.525211</long><lat>40.975233</lat><intensite>1</intensite><date>2006</date><libelle>Xbox</libelle></data>
+		<data><long>-82.874875</long><lat>31.502113</lat><intensite>1</intensite><date>2008</date><libelle>Xbox</libelle></data>
+		<data><long>-90.423258</long><lat>31.599805</lat><intensite>1</intensite><date>2008</date><libelle>Playstation</libelle></data>
+</XMLFile>		
