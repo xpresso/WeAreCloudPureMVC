@@ -3,6 +3,20 @@
 	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
 		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>
 	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+	<mx:HSlider x="134" y="419"	
+    				id="opacitySlider" 
+    				minimum="0" 
+    				maximum="1" 
+    				value="0.7"	
+    				dataTipPlacement="top" 
+    				tickColor="black" 
+		            tickInterval="10" 
+		            labels="['0%','100%']" 
+		            allowTrackClick="true" 
+		            liveDragging="true"
+    				snapInterval="0.01" 
+    				change="this.Heatmap.alpha = opacitySlider.value;"
+    					/>
 
 	<mx:Script>
 		<![CDATA[
@@ -128,8 +142,7 @@
 			/* Heatmap */
 			this.heatmap = new HeatMap();
 			this.heatmap.transformationFunction = latLonToPoint;
-			this.heatmap.weightFunction = intensityToWeight;
-			this.heatmap.gradientArray = GradientDictionary.RAINBOW;			
+			this.heatmap.weightFunction = intensityToWeight;			
 			
 			this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
 			this.map.addOverlay(this.heatMapOverlay);

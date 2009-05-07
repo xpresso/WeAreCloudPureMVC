@@ -1,7 +1,7 @@
 <?xmlversion="1.0"encoding="UTF-8"?>
 	<XMLFile>	
-		<data><long>-94.239816</long><lat>36.350885</lat><intensite>1</intensite></data>
-		<data><long>-91.732235</long><lat>35.222133</lat><intensite>1</intensite></data>	
+		<data><long>-94.239816</long><lat>36.350885</lat><intensite>1000</intensite></data>
+		<data><long>-91.732235</long><lat>35.222133</lat><intensite>500</intensite></data>	
 		<data><long>-95.773672</long><lat>31.740062</lat><intensite>1</intensite></data>
 		<data><long>-86.847144</long><lat>34.169426</lat><intensite>1</intensite></data>
 		<data><long>-91.525211</long><lat>40.975233</lat><intensite>1</intensite></data>
