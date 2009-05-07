@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="300" creationComplete="initFileChooser()">
-	<maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
-		width="531" height="333" x="30" y="10" mapevent_mapready="onMapReady(event)"/>
-	<mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+	
+	<mx:Panel width="800" height="600" x="{(width - 800)/2}" y="{(height - 600)/2}"
+        title="Heatmap - We are cloud">
+        <maps:Map xmlns:maps="com.google.maps.*" id="map" key="file://"
+			width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>
+	
+        <mx:ControlBar>
+            <mx:Spacer width="100%"/>
+            <mx:Button x="434" y="419" label="Choose a XML file" click="file.browse(typeFilter)"/>
+        </mx:ControlBar>
+    </mx:Panel>
 
 	<mx:Script>
 		<![CDATA[
