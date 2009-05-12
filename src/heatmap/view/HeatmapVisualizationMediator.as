@@ -62,7 +62,7 @@ package heatmap.view
 						/* and to the map. */
 						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
 					}
-				break;
+					break;
 				
 				case  ApplicationFacade.CRITERIA_APPLICATION_COMPLETE:
 					var pointsSubList:ArrayCollection = notification.getBody() as ArrayCollection;
