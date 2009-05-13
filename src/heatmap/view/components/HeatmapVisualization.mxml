@@ -1,131 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas 	xmlns:mx="http://www.adobe.com/2006/mxml"
-			xmlns:flexlib="flexlib.controls.*" 
-			xmlns:maps="com.google.maps.*" 
+			xmlns:flexlib="flexlib.controls.*"
+			xmlns:maps="com.google.maps.*"
 			width="100%" height="100%" creationComplete="initFileChooser()">
 	<mx:ProgressBar id="PB" width="200" indeterminate="true" x="{(width - 200) / 2}" y="{height / 2}"/>
 	<mx:Panel id="PN" width="800" height="550" x="{(width - 800) /2}" y="{(height - 550) / 2 }" title="Heatmap - We are cloud">
-        <mx:HBox width="100%" height="100%" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
-        	<mx:VBox width="20%" height="100%" x="10">
-        		<mx:Button label="Play" width="100%" height="24" click="applyCriteria()"/>
-        		<mx:List id="dataList" width="100%" height="100%" allowMultipleSelection="true" editable="false" backgroundColor="#D1DFDD"/>        		
-            </mx:VBox>        	         		
-        	<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>       
-        </mx:HBox>
-        <mx:ControlBar width="100%" height="50">
-       	<mx:Grid width="100%" paddingLeft="200">
-       	 	<mx:GridRow width="100%" height="100%">
-       	 		<mx:GridItem width="171" height="100%" paddingBottom="5">
-       	 			<mx:HSlider	
-       	 			id="opacitySlider"
-       	 			minimum="0" 
-       	 			maximum="1" 
-       	 			value="0.7"	
-       	 			dataTipPlacement="top" 
-       	 			tickColor="black" 
-       	 			       tickInterval="10" 
-       	 			       labels="['0%','100%']" 
-       	 			       allowTrackClick="true" 
-       	 			       liveDragging="true"
-       	 			snapInterval="0.01" 
-       	 			change="this.Heatmap.alpha = opacitySlider.value;"
-       	 			/>
-       	 		</mx:GridItem>
-       	 		<mx:GridItem width="224" height="100%" paddingTop="15">
-       	 			<mx:HSlider  
-       	 				id="intencitySlider"
-       	 			    trackHighlightSkin="flexlib.skins.SliderHighlightSkin"
-       	 			    allowTrackClick="true" allowThumbOverlap="true" 
-       	 			    liveDragging="true" 
-       	 			    showDataTip="true"  dataTipPlacement="top"  dataTipOffset="3" 
-       	 			    showTrackHighlight="true"
-       	 			    thumbCount="2"  width="200" 
-       	 			    values="[0, 255]"
-       	 			    minimum="0" maximum="255" snapInterval="1"
-       	 			    change="this.Heatmap.intensityValue1 = intencitySlider.values[0];
-       	 			    		this.Heatmap.intensityValue2 = intencitySlider.values[1];"
-       	 			/>
-       	 		</mx:GridItem>
-       	 		<mx:GridItem width="145" height="100%" paddingTop="11">
-       	 			<mx:Button label="Choose a XML file" click="file.browse(typeFilter)"/>
-       	 		</mx:GridItem>
-       	 	</mx:GridRow>
-       	 </mx:Grid>
-        </mx:ControlBar>
-    </mx:Panel>
-    
-    <mx:Style>
-    	global 
-    	{
-            modalTransparencyBlur: 0;
-            modalTransparency: 0.8;
-            modalTransparencyColor: haloSilver;
-            modalTransparencyDuration: 500;
-        }
-    </mx:Style>
+		<mx:HBox width="100%" height="100%" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+			<mx:VBox width="20%" height="100%" x="10">
+				<mx:Button label="Play" width="100%" height="24" click="applyCriteria()"/>
+				<mx:List id="dataList" width="100%" height="100%" allowMultipleSelection="true" editable="false" backgroundColor="#D1DFDD"/>
+			</mx:VBox>        	         		
+			<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>
+		</mx:HBox>
+		<mx:ControlBar width="100%" height="50">
+		<mx:Grid width="100%" paddingLeft="200">
+			<mx:GridRow width="100%" height="100%">
+				<mx:GridItem width="171" height="100%" paddingBottom="5">
+				<mx:HSlider
+					id="opacitySlider"
+					minimum="0"
+					maximum="1"
+					value="0.7"
+					dataTipPlacement="top"
+					tickColor="black"
+					tickInterval="10"
+					labels="['0%','100%']"
+					allowTrackClick="true"
+					liveDragging="true"
+					snapInterval="0.01"
+					change="this.Heatmap.alpha = opacitySlider.value;"
+				/>
+				</mx:GridItem>
+				<mx:GridItem width="224" height="100%" paddingTop="15">
+					<mx:HSlider
+						id="intencitySlider"
+						trackHighlightSkin="flexlib.skins.SliderHighlightSkin"
+						allowTrackClick="true" allowThumbOverlap="true"
+						liveDragging="true"
+						showDataTip="true"  dataTipPlacement="top"  dataTipOffset="3"
+						showTrackHighlight="true"
+						thumbCount="2"  width="200"
+						values="[0, 255]"
+						minimum="0" maximum="255" snapInterval="1"
+						change="this.Heatmap.intensityValue1 = intencitySlider.values[0];
+						        this.Heatmap.intensityValue2 = intencitySlider.values[1];"
+					/>
+				</mx:GridItem>
+				<mx:GridItem width="145" height="100%" paddingTop="11">
+					<mx:Button label="Choose a XML file" click="file.browse(typeFilter)"/>
+				</mx:GridItem>
+			</mx:GridRow>
+		</mx:Grid>
+		</mx:ControlBar>
+	</mx:Panel>
 
+    <mx:Style>
+		global
+		{
+			modalTransparencyBlur: 0;
+			modalTransparency: 0.8;
+			modalTransparencyColor: haloSilver;
+			modalTransparencyDuration: 500;
+		}
+	</mx:Style>
 
 	<mx:Script>
 		<![CDATA[
-			import mx.managers.PopUpManager;
+			import com.google.maps.LatLngBounds;
 			import mx.collections.ArrayCollection;
-			import com.google.maps.overlays.Marker;
-			import com.google.maps.LatLng;
+			import mx.managers.PopUpManager;
+
 			import michaelvandaniker.visualization.*;
 			import hmp.*;
 			import heatmap.view.events.DocEvent;
-	
+
 			import com.google.maps.controls.MapTypeControl;
 			import com.google.maps.controls.ScaleControl;
 			import com.google.maps.controls.ZoomControl;
 			import com.google.maps.controls.ZoomControlOptions;
 			import com.google.maps.controls.PositionControl;
 			import com.google.maps.controls.PositionControlOptions;
+
 			import com.google.maps.MapMouseEvent;
-	
-	
+			import com.google.maps.LatLng;
+
+			import com.google.maps.overlays.Marker;
+			import com.google.maps.overlays.PolygonOptions;
+
+
 			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
 			public static const APPLY_CRITERIA:String                     = 'applyCriteria';
-	
+
 			private var file:FileReference;
 			private var typeFilter:Array;
-			
+
 			public var pointsList:ArrayCollection = new ArrayCollection();
 			/**
 			 * The heatmap
 			 */
 			private var heatmap:HeatMap;
-			
 			/**
 			 * The overlay
 			 */
 			private var heatMapOverlay:GHeatMapOverlay;
-			
-			
+
 			private function initFileChooser():void
 			{
 				typeFilter = initializeTypeFilter();
 				file = new FileReference();
 				initializeListeners(file);
 			}
-	
+
 			private function initializeTypeFilter():Array
 			{
 				var documentFilter:FileFilter = new FileFilter("Documents (*.xml)", "*.xml");
 				return new Array(documentFilter);
 			}
-	
+
 			/**
-			 * Add listeners to the file FileReference.
-			 * To add more Listeners, modify this function.
+			 * Add listeners to the file FileReference. To add more Listeners, modify this function.
 			 */
 			private function initializeListeners(dispatcher:IEventDispatcher):void
 			{
 				dispatcher.addEventListener(Event.SELECT, selectHandler);
 				dispatcher.addEventListener(Event.COMPLETE, completeHandler);
 			}
-			
+
 			/**
 			 * Handle select event.
 			 */
@@ -134,7 +135,6 @@
 				var fileRef:FileReference = event.target as FileReference;
 				sendEvent(LOAD_XML_DATA, file);
 			}
-	
 			/**
 			 * Handle select event.
 			 */
@@ -143,67 +143,55 @@
 				var fileRef:FileReference = event.target as FileReference;
 				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
 			}
-			
+		
 			private function applyCriteria():void
-			{			
-				sendEvent(APPLY_CRITERIA, [pointsList, dataList.selectedItems]);			
+			{
+				sendEvent(APPLY_CRITERIA, [pointsList, dataList.selectedItems]);
 			}
-	
+
 			private function sendEvent(notificationType:String, body:Object = null):void
 			{
 				dispatchEvent(new DocEvent(notificationType, body));
 			}
-	
+
 			/**
-			 * Called when the map's load is finished
-			 * Add google's tools like zoom, position.
+			 * Called when the map's load is finished. Add google's tools like zoom, position.
 			 */
 			private function onMapReady(event:Event):void
 			{
 				// Zoom on the map
-				var zoom:ZoomControl;
-				// Scale on the map
-				var scale:ScaleControl;
-				// Position control on the map
-				var position:PositionControl;
-	
-				var mapContr:MapTypeControl;
-				//var mapContrOpt:MapTypeControlOptions;
-	
-				// Zoom
-				zoom = new ZoomControl(new ZoomControlOptions());
+				var zoom:ZoomControl = new ZoomControl(new ZoomControlOptions());
 				map.addControl(zoom);
 				map.enableScrollWheelZoom();
 				map.enableContinuousZoom();
-	
-				// Echelle, et l'anglais! :p
-				scale = new ScaleControl();
+				// Disable double-click to zoom since one click pops-up infos on points.
+				map.setDoubleClickMode(3);
+				// Scale on the map
+				var scale:ScaleControl = new ScaleControl();
 				map.addControl(scale);
-	
-				// Fleches
-				position = new PositionControl(new PositionControlOptions());
+				// Position control on the map
+				var position:PositionControl = new PositionControl(new PositionControlOptions());
 				map.addControl(position);
-	
-				// Vue en relief, satellite etc.
-	 			mapContr = new MapTypeControl();
+				// Views
+				var mapContr:MapTypeControl = new MapTypeControl();
 	 			map.addControl(mapContr);
-	
-	            // Item radius
-				//slider.value = heatmap.itemRadius;
-	
-				// Add a listener on mouse move.
-				this.map.addEventListener(MapMouseEvent.MOUSE_MOVE, onMouseMove);
-				
-				/* Heatmap */
+
+				// Set it visible if the mouse moves one.
+				map.addEventListener(MapMouseEvent.MOUSE_MOVE, function(event:MapMouseEvent):void
+					{
+
+					});
+
+				// Heatmap
 				this.heatmap = new HeatMap();
 				this.heatmap.transformationFunction = latLonToPoint;
 				this.heatmap.weightFunction = intensityToWeight;
-				this.heatmap.gradientArray = GradientDictionary.RAINBOW;			
-				
+				this.heatmap.gradientArray = GradientDictionary.RAINBOW;	
+
 				this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
 				this.map.addOverlay(this.heatMapOverlay);
 			}
-			
+
 			public function get Heatmap():HeatMap
 			{
 				return this.heatmap;
@@ -212,34 +200,33 @@
 			{
 				return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
 			}
-	
+
 			private function intensityToWeight(o:Object):Object
 			{
 				return ((o as HeatmapPoint).intensity as Number);
 			}
-	
-			/**
-			 * Handle MOUSE_MOVE event.
-			 */
-			private function onMouseMove(event:MapMouseEvent):void
-			{
-				if (Heatmap.dataProvider != null)
-				{
-					for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
-					{
-						var marker:Marker = heatmap.dataProvider[i].marker;
-						if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
-						{
-							marker.visible = true;
-						}
-						else
-						{
-							marker.visible = false;
-						}
-					}
-				}
-			}
 
+//			/**
+//			 * Handle MOUSE_MOVE event.
+//			 */
+//			private function onMouseMove(event:MapMouseEvent):void
+//			{
+//				if (Heatmap.dataProvider != null)
+//				{
+//					for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
+//					{
+//						var marker:Marker = heatmap.dataProvider[i].marker;
+//						if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
+//						{
+//							marker.visible = true;
+//						}
+//						else
+//						{
+//							marker.visible = false;
+//						}
+//					}
+//				}
+//			}
 		]]>
 	</mx:Script>
 </mx:Canvas>
