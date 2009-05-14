@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" styleName="progressBarPopUpStyle"
+	width="100%" height="100%" backgroundAlpha="1" borderAlpha="1" borderColor="#726565" backgroundColor="#726565">
+	<mx:ProgressBar id="progressBar" width="100%" height="80%" indeterminate="true" />
+</mx:TitleWindow>
