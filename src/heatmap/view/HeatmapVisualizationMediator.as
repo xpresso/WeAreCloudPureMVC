@@ -5,7 +5,6 @@ package heatmap.view
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
-	
 	import mx.collections.ArrayCollection;
 	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
@@ -31,7 +30,7 @@ package heatmap.view
 						
 		override public function listNotificationInterests():Array
 		{
-			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE, ApplicationFacade.CRITERIA_APPLICATION_COMPLETE];
+			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE];
 		}
 		
 		override public function handleNotification(notification:INotification):void
@@ -40,9 +39,10 @@ package heatmap.view
 			{
 				case ApplicationFacade.DATA_EXTRACTED:				
 					var pointsListToGeocode:ArrayCollection = notification.getBody()[0] as ArrayCollection;
-					var criteriaList:ArrayCollection = notification.getBody()[1] as ArrayCollection;									
+					var criteria:Array = notification.getBody()[1] as Array;									
 					
-					(this.viewComponent as HeatmapVisualization).dataList.dataProvider = criteriaList;
+					(this.viewComponent as HeatmapVisualization).criteria = criteria;
+					(this.viewComponent as HeatmapVisualization).criteriaListComponent.dataProvider = criteria[0];
 					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
 				break;
 				
@@ -62,12 +62,8 @@ package heatmap.view
 						/* and to the map. */
 						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
 					}
+					this.viewComponent.activeButtons();
 					break;
-				
-				case  ApplicationFacade.CRITERIA_APPLICATION_COMPLETE:
-					var pointsSubList:ArrayCollection = notification.getBody() as ArrayCollection;
-					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsSubList;
-				break;
 			}
 		}
 		

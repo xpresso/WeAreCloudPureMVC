@@ -18,8 +18,6 @@ package hmp
 		private var _address:String;
 		private var _intensity:Number;
 		private var _latLng:LatLng;
-		private var _date:String;
-		private var _libelle:String;
 		private var _marker:Marker;
 		
 		public static const GEOCODEDDATA:String                  = 'geocodedData';
@@ -27,16 +25,13 @@ package hmp
 		 * Constructor of the HeatmapPoint
 		 **/
 		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, 
-									 date:String = null, libelle:String = null, marker:Marker = null)
+									 marker:Marker = null)
 		{
 			this._address = address;
 			this._intensity = intensity;
 			this._latLng = latLng;
-			this._date = date;
-			this._libelle = libelle;
 			this._marker = marker;
 		}
-
 
 		public function get address():String
 		{
@@ -77,24 +72,9 @@ package hmp
 			this._marker = marker;
 		}
 		
-		public function get date():String
+		public function toString():String
 		{
-			return this._date;
-		}
-		
-		public function set date(date:String):void
-		{
-			this._date = date;
-		}
-		
-		public function get libelle():String
-		{
-			return this._libelle;
-		}
-		
-		public function set libelle(libelle:String):void
-		{
-			this._libelle = libelle;
+			return this._address.toString();
 		}
 		
 		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
