@@ -4,8 +4,8 @@ package michaelvandaniker.visualization
     import flash.display.BlendMode;
     import flash.display.GradientType;
     import flash.display.Shape;
+    import flash.display.SpreadMethod;
     import flash.events.Event;
-    import flash.events.MouseEvent;
     import flash.filters.BlurFilter;
     import flash.geom.Matrix;
     import flash.geom.Point;
@@ -103,7 +103,7 @@ package michaelvandaniker.visualization
 		protected var centerValue:Number;
 		
 		
-		
+		[Bindable]
 		public function get intensityValue1():int
         {
         	return _intensityValue1;
@@ -113,11 +113,13 @@ package michaelvandaniker.visualization
         	if(_intensityValue1 != value)
         	{
 	        	_intensityValue1 = value;
+	        	collectionDirtyFlag = true;
 	        	invalidateDisplayList();
 	        }
         }
 		private var _intensityValue1:int = 0;
 		
+		[Bindable]
 		public function get intensityValue2():int
         {
         	return _intensityValue2;
@@ -127,6 +129,7 @@ package michaelvandaniker.visualization
         	if(_intensityValue2 != value)
         	{
 	        	_intensityValue2 = value;
+	        	collectionDirtyFlag = true;
 	        	invalidateDisplayList();
 	        }
         }
@@ -380,8 +383,9 @@ package michaelvandaniker.visualization
             heatMapShape.graphics.beginGradientFill(GradientType.RADIAL,//GradientType.LINEAR or GradientType.RADIAL
             										[centerValue,0],    // les couleurs prises
             										[1,1],//alphas: An array of alpha values for the corresponding colors in the colors array; valid values are 0 to 1
-            										[_intensityValue1,_intensityValue2],//ratios: An array of color distribution ratios; valid values are 0 to 255. This value defines the percentage of the width where the color is sampled at 100%
-            										m);
+            										[Math.min(_intensityValue1,150),_intensityValue2],//ratios: An array of color distribution ratios; valid values are 0 to 255. This value defines the percentage of the width where the color is sampled at 100%
+            										m,
+            										SpreadMethod.REFLECT);
             heatMapShape.graphics.drawCircle(0,0,itemRadius);
             heatMapShape.graphics.endFill();
            

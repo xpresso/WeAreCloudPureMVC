@@ -100,45 +100,5 @@ package heatmap.model
 				(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
 			} 						
 		}
-		
-		public function applyCriteria(array:Array):void
-		{
-			var pointsSubList:ArrayCollection = new ArrayCollection();
-			var pointsList:ArrayCollection = array[0] as ArrayCollection;
-			var criteriaList:Array = array[1] as Array;
-			
-			var found:Boolean = false;
-			var i:int = 0, j:int = 0;
-			
-			for (i ; i < pointsList.length ; i++)
-			{
-				while(j < criteriaList.length && !found)
-				{
-					found = (pointsList[i] as HeatmapPoint).date == criteriaList[j].toString()
-							|| (pointsList[i] as HeatmapPoint).libelle == criteriaList[j].toString();
-					j++;
-				}
-				if(found)
-					pointsSubList.addItem(pointsList[i] as HeatmapPoint);
-					
-				found = false;
-				j=0;
-			}
-			
-			sendNotification(ApplicationFacade.CRITERIA_APPLICATION_COMPLETE, pointsSubList);
-		}
-		
-		private function isContained(array:ArrayCollection, data:String):Boolean
-		{
-			var found:Boolean = false;
-			var i:int = 0;
-
-			while(i < array.length && !found)
-			{
-				found = array[i].toString() == data;
-				i++;
-			}
-			return found;
-		}
 	}
 }
