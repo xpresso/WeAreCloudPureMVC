@@ -7,47 +7,82 @@
 	<mx:Panel id="PN" width="800" height="550" x="{(width - 800) /2}" y="{(height - 550) / 2 }" title="Heatmap - We are cloud">
 		<mx:HBox width="100%" height="100%" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
 			<mx:VBox width="20%" height="100%" x="10">
-				<mx:Button label="Play" width="100%" height="24" click="applyCriteria()"/>
-				<mx:List id="dataList" width="100%" height="100%" allowMultipleSelection="true" editable="false" backgroundColor="#D1DFDD"/>
-			</mx:VBox>        	         		
+				<mx:HBox width="100%">
+					<mx:Button label="Play" width="100%" height="24" click="startPlayer()"/>
+					<mx:Button label="Pause" width="50%" height="24" click="stopPlayer()"/>
+				</mx:HBox>
+				<mx:Button label="Reset" width="100%" height="24"
+					click="{timer.stop(); this.Heatmap.dataProvider = this.pointsList;}"
+				/>
+				<mx:ComboBox id="criteriaListComponent" width="100%" 
+					close="{dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection; 
+					        dataListComponent.selectedIndex = 0;}"
+				/>
+				<mx:List id="dataListComponent" 
+					width="100%" height="100%" selectable="true" editable="false" backgroundColor="#D1DFDD"/>        		
+			</mx:VBox>      	         		
 			<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>
 		</mx:HBox>
 		<mx:ControlBar width="100%" height="50">
 		<mx:Grid width="100%" paddingLeft="200">
-			<mx:GridRow width="100%" height="100%">
-				<mx:GridItem width="171" height="100%" paddingBottom="5">
+			<mx:GridRow width="100%" height="20">
+				<mx:GridItem width="180" height="100%" paddingBottom="1">
+					<mx:Label  text="Opacity:" fontWeight="bold"/>
+				</mx:GridItem>
+				<mx:GridItem width="180" height="100%" paddingBottom="1">
+					<mx:Label  text="Radius:" fontWeight="bold"/>
+				</mx:GridItem>
+				<mx:GridItem width="180" height="100%" paddingBottom="1">
+					<mx:Label  text="Colors:" fontWeight="bold"/>
+				</mx:GridItem>
+				<mx:GridItem width="180" height="100%" paddingBottom="1">
+				</mx:GridItem>
+	       	</mx:GridRow>
+			<mx:GridRow width="100%" height="95%">
+				<mx:GridItem width="180" height="95%" paddingBottom="2">
 				<mx:HSlider
 					id="opacitySlider"
 					minimum="0"
 					maximum="1"
 					value="0.7"
-					dataTipPlacement="top"
-					tickColor="black"
-					tickInterval="10"
-					labels="['0%','100%']"
-					allowTrackClick="true"
+					width="160"
 					liveDragging="true"
 					snapInterval="0.01"
 					change="this.Heatmap.alpha = opacitySlider.value;"
 				/>
 				</mx:GridItem>
-				<mx:GridItem width="224" height="100%" paddingTop="15">
+				<mx:GridItem width="180" height="100%" paddingBottom="2">
+					<mx:HSlider
+					id="radiusSlider"
+					width="160"
+					minimum="1"
+					maximum="50"
+					value="{heatmap.itemRadius}"
+					snapInterval="1"
+					liveDragging="true"
+					change="heatmap.itemRadius = radiusSlider.value;"
+				/>
+				</mx:GridItem>
+				<mx:GridItem width="180" height="100%" paddingBottom="2">
 					<mx:HSlider
 						id="intencitySlider"
-						trackHighlightSkin="flexlib.skins.SliderHighlightSkin"
-						allowTrackClick="true" allowThumbOverlap="true"
+						allowTrackClick="true"
+						allowThumbOverlap="false"
 						liveDragging="true"
-						showDataTip="true"  dataTipPlacement="top"  dataTipOffset="3"
+						showDataTip="true"
+						dataTipPlacement="top"
+						dataTipOffset="3"
 						showTrackHighlight="true"
-						thumbCount="2"  width="200"
+						thumbCount="2"
+						width="160"
 						values="[0, 255]"
 						minimum="0" maximum="255" snapInterval="1"
 						change="this.Heatmap.intensityValue1 = intencitySlider.values[0];
 						        this.Heatmap.intensityValue2 = intencitySlider.values[1];"
 					/>
 				</mx:GridItem>
-				<mx:GridItem width="145" height="100%" paddingTop="11">
-					<mx:Button label="Choose a XML file" click="file.browse(typeFilter)"/>
+				<mx:GridItem width="180" height="100%" paddingTop="0">
+					<mx:Button label="Choose a XML file" click="file.browse(typeFilter)" width="160"/>
 				</mx:GridItem>
 			</mx:GridRow>
 		</mx:Grid>
@@ -84,9 +119,7 @@
 			import com.google.maps.MapMouseEvent;
 			import com.google.maps.LatLng;
 
-			import com.google.maps.overlays.Marker;
-			import com.google.maps.overlays.PolygonOptions;
-
+			import com.google.maps.MapZoomEvent;
 
 			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
@@ -96,6 +129,9 @@
 			private var typeFilter:Array;
 
 			public var pointsList:ArrayCollection = new ArrayCollection();
+			public var criteria:Array = new Array(3);
+			public var timer:Timer = new Timer(2500);
+			
 			/**
 			 * The heatmap
 			 */
@@ -107,24 +143,10 @@
 
 			private function initFileChooser():void
 			{
-				typeFilter = initializeTypeFilter();
+				typeFilter = new FileFilter("Documents (*.xml)", "*.xml") as Array;
 				file = new FileReference();
-				initializeListeners(file);
-			}
-
-			private function initializeTypeFilter():Array
-			{
-				var documentFilter:FileFilter = new FileFilter("Documents (*.xml)", "*.xml");
-				return new Array(documentFilter);
-			}
-
-			/**
-			 * Add listeners to the file FileReference. To add more Listeners, modify this function.
-			 */
-			private function initializeListeners(dispatcher:IEventDispatcher):void
-			{
-				dispatcher.addEventListener(Event.SELECT, selectHandler);
-				dispatcher.addEventListener(Event.COMPLETE, completeHandler);
+				file.addEventListener(Event.SELECT, selectHandler);
+				file.addEventListener(Event.COMPLETE, completeHandler);
 			}
 
 			/**
@@ -143,10 +165,20 @@
 				var fileRef:FileReference = event.target as FileReference;
 				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
 			}
-		
-			private function applyCriteria():void
+
+			private function startPlayer():void
 			{
-				sendEvent(APPLY_CRITERIA, [pointsList, dataList.selectedItems]);
+				timer.addEventListener(TimerEvent.TIMER,function():void
+				{
+					dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) % (dataListComponent.dataProvider as ArrayCollection).length;
+					Heatmap.dataProvider = criteria[2][criteriaListComponent.selectedIndex][dataListComponent.selectedItem];
+				});
+				timer.start();
+			}
+
+			private function stopPlayer():void
+			{
+				timer.stop();
 			}
 
 			private function sendEvent(notificationType:String, body:Object = null):void
@@ -182,6 +214,11 @@
 
 					});
 
+				map.addEventListener(MapMouseEvent.MOUSE_MOVE, function(event:MapZoomEvent):void
+					{
+						heatmap.itemRadius = radiusSlider.value;
+					});
+
 				// Heatmap
 				this.heatmap = new HeatMap();
 				this.heatmap.transformationFunction = latLonToPoint;
@@ -190,6 +227,9 @@
 
 				this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
 				this.map.addOverlay(this.heatMapOverlay);
+				
+				// Item radius
+				radiusSlider.value = heatmap.itemRadius;
 			}
 
 			public function get Heatmap():HeatMap

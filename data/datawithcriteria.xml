@@ -1,10 +1,16 @@
 <?xmlversion="1.0"encoding="UTF-8"?>
 	<XMLFile>	
 		<data><long>-94.239816</long><lat>36.350885</lat><intensite>1</intensite><date>2006</date><libelle>Wii</libelle></data>
-		<data><long>-91.732235</long><lat>35.222133</lat><intensite>1</intensite><date>2005</date><libelle>Sony</libelle></data>	
-		<data><long>-95.773672</long><lat>31.740062</lat><intensite>1</intensite><date>11 Septembre 2005</date><libelle>Wii</libelle></data>
+		<data><long>-91.732235</long><lat>35.222133</lat><intensite>60</intensite><date>2005</date><libelle>Sony</libelle></data>	
+		<data><long>-95.773672</long><lat>31.740062</lat><intensite>40</intensite><date>11 Septembre 2005</date><libelle>Wii</libelle></data>
 		<data><long>-86.847144</long><lat>34.169426</lat><intensite>1</intensite><date>11 Septembre 2005</date><libelle>Sony</libelle></data>
 		<data><long>-91.525211</long><lat>40.975233</lat><intensite>1</intensite><date>2006</date><libelle>Xbox</libelle></data>
 		<data><long>-82.874875</long><lat>31.502113</lat><intensite>1</intensite><date>2008</date><libelle>Xbox</libelle></data>
 		<data><long>-90.423258</long><lat>31.599805</lat><intensite>1</intensite><date>2008</date><libelle>Playstation</libelle></data>
-</XMLFile>		
+		<data><long>-82.005173</long><lat>34.545636</lat><intensite>1</intensite><date>2006</date><libelle>Wii</libelle></data>
+		<data><long>-98.058575</long><lat>29.74530</lat><intensite>30</intensite><date>2005</date><libelle>Sony</libelle></data>	
+		<data><long>-85.855306</long><lat>38.957829</lat><intensite>20</intensite><date>11 Septembre 2005</date><libelle>Wii</libelle></data>
+		<data><long>-104.966953</long><lat>40.43581</lat><intensite>1</intensite><date>11 Septembre 2005</date><libelle>Sony</libelle></data>
+		<data><long>-86.831731</long><lat>39.637245</lat><intensite>15</intensite><date>2006</date><libelle>Xbox</libelle></data>
+		<data><long>-82.22007</long><lat>28.492059</lat><intensite>1</intensite><date>2008</date><libelle>Xbox</libelle></data>
+</XMLFile>
