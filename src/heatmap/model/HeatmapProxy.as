@@ -51,6 +51,7 @@ package heatmap.model
 		        	date = externalXML.data.date[i].toString();
 		        	libelle = externalXML.data.libelle[i].toString();
 		        	
+		        	//pointsList.addItem(new HeatmapPoint(data.adresse[i], externalXML.data.intensite[i]));
 		        	pointsList.addItem(new HeatmapPoint("10 Avenue Foch", externalXML.data.intensite[i], new LatLng(externalXML.data.lat[i],externalXML.data.long[i]), date, libelle));
 		        	//To delete new Latlng(), date and libelle and change adresse;
 		        	
