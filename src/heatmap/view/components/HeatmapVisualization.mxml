@@ -101,7 +101,6 @@
 
 	<mx:Script>
 		<![CDATA[
-			import com.google.maps.LatLngBounds;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
 
@@ -117,9 +116,8 @@
 			import com.google.maps.controls.PositionControlOptions;
 
 			import com.google.maps.MapMouseEvent;
-			import com.google.maps.LatLng;
-
 			import com.google.maps.MapZoomEvent;
+			import com.google.maps.LatLng;
 
 			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
@@ -236,11 +234,11 @@
 			{
 				return this.heatmap;
 			}
+
 			private function latLonToPoint(o:Object):Object
 			{
 				return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
 			}
-
 			private function intensityToWeight(o:Object):Object
 			{
 				return ((o as HeatmapPoint).intensity as Number);
