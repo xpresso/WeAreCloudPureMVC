@@ -129,6 +129,7 @@
 			public var pointsList:ArrayCollection = new ArrayCollection();
 			public var criteria:Array = new Array(3);
 			public var timer:Timer = new Timer(2500);
+			public var _window:ProgressBarPopUp = new ProgressBarPopUp();
 			
 			/**
 			 * The heatmap
@@ -152,6 +153,10 @@
 			 */
 			private function selectHandler(event:Event):void
 			{
+				PopUpManager.addPopUp(_window, this, true);
+				_window.progressBar.label = "Loading file";
+				PopUpManager.centerPopUp(_window);
+
 				var fileRef:FileReference = event.target as FileReference;
 				sendEvent(LOAD_XML_DATA, file);
 			}
@@ -160,6 +165,7 @@
 			 */
 			private function completeHandler(event:Event):void
 			{
+				_window.progressBar.label = "Extracting data";
 				var fileRef:FileReference = event.target as FileReference;
 				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
 			}
