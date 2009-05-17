@@ -12,7 +12,7 @@
 				<mx:Button label="Pause" width="50%" height="24" click="stopPlayer()"/>
 			</mx:HBox>
 			<mx:Button label="Reset" width="100%" height="24"
-				click="{timer.stop(); this.Heatmap.dataProvider = this.pointsList;}"
+				click="resetPlayer()"
 			/>
 			<mx:ComboBox id="criteriaListComponent" width="100%"
 				close="{dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection;
@@ -119,6 +119,8 @@
 			import com.google.maps.MapZoomEvent;
 			import com.google.maps.LatLng;
 
+			import markermanager.MarkerManager;
+
 			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
 			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
 			public static const APPLY_CRITERIA:String                     = 'applyCriteria';
@@ -127,6 +129,7 @@
 			private var typeFilter:Array;
 
 			public var pointsList:ArrayCollection = new ArrayCollection();
+			public var markerManager:MarkerManager;
 			public var criteria:Array = new Array(3);
 			public var timer:Timer = new Timer(2500);
 			public var _window:ProgressBarPopUp = new ProgressBarPopUp();
@@ -172,10 +175,19 @@
 
 			private function startPlayer():void
 			{
-				timer.addEventListener(TimerEvent.TIMER,function():void
+				timer.addEventListener(TimerEvent.TIMER, function():void
 				{
-					dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) % (dataListComponent.dataProvider as ArrayCollection).length;
-					Heatmap.dataProvider = criteria[2][criteriaListComponent.selectedIndex][dataListComponent.selectedItem];
+					dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) %
+					                                  (dataListComponent.dataProvider as ArrayCollection).length;
+					Heatmap.dataProvider = criteria[2]
+					                               [criteriaListComponent.selectedIndex]
+					                               [dataListComponent.selectedItem];
+
+					markerManager.clearMarkers();
+					for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+					{
+						markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
+					}
 				});
 				timer.start();
 			}
@@ -183,6 +195,17 @@
 			private function stopPlayer():void
 			{
 				timer.stop();
+			}
+
+			private function resetPlayer():void
+			{
+				timer.stop();
+				Heatmap.dataProvider = pointsList;
+				markerManager.clearMarkers();
+				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				{
+					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
+				}
 			}
 
 			private function sendEvent(notificationType:String, body:Object = null):void
@@ -195,6 +218,7 @@
 			 */
 			private function onMapReady(event:Event):void
 			{
+				markerManager = new MarkerManager(map, {});
 				// Zoom on the map
 				var zoom:ZoomControl = new ZoomControl(new ZoomControlOptions());
 				map.addControl(zoom);
@@ -211,12 +235,6 @@
 				// Views
 				var mapContr:MapTypeControl = new MapTypeControl();
 	 			map.addControl(mapContr);
-
-				// Set it visible if the mouse moves one.
-				map.addEventListener(MapMouseEvent.MOUSE_MOVE, function(event:MapMouseEvent):void
-					{
-
-					});
 
 				map.addEventListener(MapZoomEvent.ZOOM_CHANGED, function(event:MapZoomEvent):void
 					{

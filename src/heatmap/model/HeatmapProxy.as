@@ -34,7 +34,7 @@ package heatmap.model
 		{			
 	        var XMLFile:XML = new XML(fileRef.data);
 	        var pointsList:ArrayCollection = new ArrayCollection();
-			
+
 			/* Contruction de la liste des critères */				
 			const NB_BAL_TO_IGNORE:int = 3; /* Long - Lat - intensite */
 			const NB_BAL_TO_CARE:int = (XMLFile.children()[0] as XML).children().length()-NB_BAL_TO_IGNORE;
@@ -60,7 +60,7 @@ package heatmap.model
 	    	for(var i:int = 0; i < XMLFile.data.length() ; i++)
 	        {
 	        	data = XMLFile.data[i];
-	        	
+
 	    		pointsList.addItem(new HeatmapPoint("10 Avenue Foch", data.intensite, new LatLng(data.lat,data.long)));
 	        	//TODO delete new Latlng(), date and libelle and change adresse;
 	    		for(var j:int=0 ; j < NB_BAL_TO_CARE ; j++)
@@ -68,7 +68,7 @@ package heatmap.model
 	    			//La valeur de la balise j qui nous interesse
 	    			indice = data.children()[j+NB_BAL_TO_IGNORE];
 	    			
-	    			//Si cette entrée n'existe pas dans le dictionnaire, alors on l'a créée, et on l'ajoute à la liste des valeurs pour cette balise j.
+	    			//Si cette entrée n'existe pas dans le dictionnaire, alors on la créer, et on l'ajoute à la liste des valeurs pour cette balise j.
 	    			if (criteriaDictionary[j][indice] == null)
 	    			{
 	    				(criteriaContent[j] as ArrayCollection).addItem(indice);

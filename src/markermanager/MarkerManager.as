@@ -5,6 +5,8 @@
  *
  * Extended by Marcus Schiesser.
  *
+ * Typo changed from original MarkerManager to fit our project.
+ *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
  */
 package markermanager
@@ -24,7 +26,7 @@ package markermanager
 	{
 
 	// Static constants:
-	public static const DEFAULT_TILE_SIZE:Number = 1024;
+	public static const DEFAULT_TILE_SIZE:Number = 768; //1024 originaly;
 	public static const DEFAULT_MAX_ZOOM:Number = 17;
 	public static const DEFAULT_BORDER_PADDING:Number = 100;
 	public static const MERCATOR_ZOOM_LEVEL_ZERO_RANGE:Number = 256;
@@ -111,7 +113,7 @@ package markermanager
 
 	private function _addOverlay(marker:Marker):void
 	{
-		this.map_.addOverlay(marker);
+		this._map.addOverlay(marker);
 		this._shownMarkers++;
 	}
 
@@ -152,7 +154,7 @@ package markermanager
 	 */
 	private function _getTilePoint(latlng:LatLng, zoom:Number, padding:Point):Point
 	{
-		var pixelPoint:Point = this.projection_.fromLatLngToPixel(latlng, zoom);
+		var pixelPoint:Point = this._projection.fromLatLngToPixel(latlng, zoom);
 		return new Point(Math.floor((pixelPoint.x + padding.x) / this._tileSize),
 		                 Math.floor((pixelPoint.y + padding.y) / this._tileSize));
 	}
@@ -200,7 +202,7 @@ package markermanager
 	{
 		var mPoint:LatLng = marker.getLatLng();
 
-		for (var zoom:Number = 1; zoom<_maxZoom; zoom++)
+		for (var zoom:Number = 1; zoom < _maxZoom; zoom++)
 		{
 			var gridPoint:Point = this._getTilePoint(mPoint, zoom, new Point(0, 0));
 			var cell:Array = this._getGridCellNoCreate(gridPoint.x, gridPoint.y, zoom);
@@ -213,14 +215,14 @@ package markermanager
 	}
 
 	/**
-	 * Automaticly add a marker at a zoom level so that markers don't overlap.
+	 * Automaticly add a marker at the zoom level so that markers don't overlap.
 	 *
 	 * @param {Marker} marker
 	 * @param {int} zoomLevelAdjust  = 4 by default.
 	 */
 	public function addMarkerAuto(marker:Marker, zoomLevelAdjust:int = 4):void
 	{
-		var minZoom:Number = calcMinZoomLevel(marker) - zoomLevelAdjust;
+		var minZoom:Number = _calcMinZoomLevel(marker) - zoomLevelAdjust;
 		if (minZoom < 1)
 		{
 			minZoom = 1;
@@ -239,12 +241,12 @@ package markermanager
 		var vertical:Boolean = this._shownBounds.minY <= point.y &&
 		                       point.y <= this._shownBounds.maxY;
 		var minX:Number = this._shownBounds.minX;
-		var horizontal:Boolean = minX <= point.x && point.x <= this.shownBounds_.maxX;
+		var horizontal:Boolean = minX <= point.x && point.x <= this._shownBounds.maxX;
 		if (!horizontal && minX < 0)
 		{
 			// Shifts the negative part of the rectangle.
 			// As point.x is always less than grid width, only test shifted minX .. 0 part of the shown bounds.
-			var width:Number = this.gridWidth_[this.shownBounds_.z];
+			var width:Number = this._gridWidth[this._shownBounds.z];
 			horizontal = minX + width <= point.x && point.x <= width - 1;
 		}
 		return vertical && horizontal;
@@ -306,10 +308,10 @@ package markermanager
 			newGrid.x = newGrid.x >> 1;
 			newGrid.y = newGrid.y >> 1;
 			--zoom;
-			}
+		}
 		if (changed)
 		{
-			this.notifyListeners_();
+			this._notifyListeners();
 		}
 	}
 
@@ -367,7 +369,6 @@ package markermanager
 		{
 			this._addMarkerBatch(markers[i], minZoom, maxZoom);
 		}
-
 		this._numMarkers[minZoom] += markers.length;
 	}
 
@@ -412,7 +413,7 @@ package markermanager
 		this._addMarkerBatch(marker, minZoom, maxZoom);
 		var gridPoint:Point = this._getTilePoint(marker.getLatLng(), this._mapZoom, new Point(0, 0));
 		if (this._isGridPointVisible(gridPoint) &&
-		    minZoom <= this.shownBounds_.z &&
+		    minZoom <= this._shownBounds.z &&
 		    this._shownBounds.z <= maxZoom)
 		{
 			this._addOverlay(marker);
@@ -556,7 +557,7 @@ package markermanager
 			return;
 		}
 
-		if (newBounds.z != this.shownBounds.z)
+		if (newBounds.z != this._shownBounds.z)
 		{
 			this._processAll(this._shownBounds, this._removeOverlay);
 			this._processAll(newBounds, this._addOverlay);
@@ -570,6 +571,14 @@ package markermanager
 			this._rectangleDiff(newBounds, this._shownBounds, this._addCellMarkers);
 		}
 		this._shownBounds = newBounds;
+		this._notifyListeners();
+	}
+
+	/**
+	 * Notify listeners when the state of what is displayed changes.
+	 */
+	private function _notifyListeners():void {
+		//this.dispatchEvent(new Event("changed"), this._shownBounds, this._shownMarkers);
 	}
 
 	/**
@@ -695,7 +704,7 @@ package markermanager
 				callback(x, y);
 			}
 			// Strictly right:
-			for (x = Math.max(minX1, maxX2 + 1); <= maxX1; x++) // x in R1 right of R2
+			for (x = Math.max(minX1, maxX2 + 1); x <= maxX1; x++) // x in R1 right of R2
 			{
 				callback(x, y);
 			}

@@ -33,13 +33,62 @@ package markermanager
 	}
 
 	/**
-	 * Gets z.
+	 * Get z.
 	 *
-	 * @return {Number} z.
+	 * @return {Number}  z.
 	 */
 	public function get z():Number
 	{
 		return this._z;
+	}
+	/**
+	 * Set z.
+	 *
+	 * @param {Number}  z.
+	 */
+	public function set z(z:Number):void
+	{
+		this._z = z;
+	}
+
+	/**
+	 * Get minX.
+	 *
+	 * @return {Number}  minX.
+	 */
+	public function get minX():Number
+	{
+		return this._minX;
+	}
+
+	/**
+	 * Get minY.
+	 *
+	 * @return {Number}  minY.
+	 */
+	public function get minY():Number
+	{
+		return this._minY;
+	}
+
+	/**
+	 * Get maxX.
+	 *
+	 * @return {Number}  maxX.
+	 */
+	public function get maxX():Number
+	{
+		return this._maxX;
+	}
+
+	/**
+	 * Get maxY.
+	 *
+	 * @return {Number}  maxY.
+	 */
+	public function get maxY():Number
+	{
+		return this._maxY;
 	}
 
 	/**
@@ -87,7 +136,7 @@ package markermanager
 	 */
 	public function toString():String
 	{
-	  return "(" + this._min() + ", " + this._max() + ")";
+	  return "(" + this.min() + ", " + this.max() + ")";
 	}
 
 	/**
