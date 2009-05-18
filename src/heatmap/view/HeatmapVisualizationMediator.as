@@ -6,6 +6,7 @@ package heatmap.view
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
 	import mx.collections.ArrayCollection;
+	import mx.managers.PopUpManager;
 	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
@@ -43,6 +44,7 @@ package heatmap.view
 					
 					(this.viewComponent as HeatmapVisualization).criteria = criteria;
 					(this.viewComponent as HeatmapVisualization).criteriaListComponent.dataProvider = criteria[0];
+					(this.viewComponent as HeatmapVisualization)._window.progressBar.label = "Geocoding addresses";
 					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
 				break;
 				
@@ -63,6 +65,7 @@ package heatmap.view
 						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
 					}
 					this.viewComponent.activeButtons();
+					PopUpManager.removePopUp((this.viewComponent as HeatmapVisualization)._window);
 					break;
 			}
 		}
