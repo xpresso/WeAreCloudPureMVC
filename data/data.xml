@@ -1,23 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 	<XMLFile>	
-		<data>
-			<adresse>18 Rue des Aigrettes, Roques, 31120</adresse>
-			<intensite>100</intensite>
-		</data>	
-		<data>
-			<adresse>Mexico, Mexico</adresse>
-			<intensite>1</intensite>
-		</data>
-		<data>
-			<adresse>Washington, United States of America</adresse>
-			<intensite>1</intensite>
-		</data>
-		<data>
-			<adresse>Las Vegas, California</adresse>
-			<intensite>1</intensite>
-		</data>
-		<data>
-			<adresse>Sidney, Australia</adresse>
-			<intensite>1</intensite>
-		</data>
+		<data><adresse>18 Rue des Aigrettes, Roques, 31120</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>	
+		<data><adresse>Mexico, Mexico</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>
+		<data><adresse>Washington, United States of America</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>
+		<data><adresse>Las Vegas, California</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>
+		<data><adresse>Sidney, Australia</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>
+		<data><adresse>2110 WEST WALNUT Rogers AR 72756</adresse><intensite>1</intensite><Date>2001</Date><Client>Compagnie d'assurances</Client></data>	
+		<data><adresse>1417 HWY 62/65 N Harrison AR 72601</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>30983 HWY 441 SOUTH Commerce GA 30529</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>2901 HWY 412 EAST Siloam Springs AR 72761</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>1155 HWY 65 NORTH Conway AR 72032</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>3801 CAMP ROBINSON RD. North Little Rock AR 72118</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>1621 NORTH BUSINESS 9 Morrilton AR 72110</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>		
+		<data><adresse>1303 SOUTH MAIN Sikeston MO 63801</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>2020 SOUTH MUSKOGEE Tahlequah OK 74464</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>Tipton Loop, Mountain Home, AR, USA</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>1500 LYNN RIGGS BLVD Claremore OK 74017</adresse><intensite>1</intensite><Date>2002</Date><Client>Compagnie d'assurances</Client></data>
+		<data><adresse>2705 GRAND AVE Carthage MO 64836</adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>1800 S JEFFERSON Lebanon MO 65536</adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>West Plains, MO, États-Unis d'Amérique</adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>2214 FAYETTEVILLE RD Van Buren AR 72956  </adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>Neosho, MO 64850, États-Unis </adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse> Robinson Street, Newport, AR 72112, États-Unis </adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>333 S WESTWOOD Poplar Bluff MO 63901  </adresse><intensite>1</intensite><Date>2003</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>1712 EAST OHIO Clinton MO 64735  </adresse><intensite>1</intensite><Date>2004</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse> 185 ST ROBERT BLVD St. Robert MO 65584 </adresse><intensite>1</intensite><Date>2004</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>4901 SO. MILL ROAD Pryor OK 74361  </adresse><intensite>1</intensite><Date>2004</Date><Client>Compagnie aérienne</Client></data>
+		<data><adresse>1201 N SERVICE ROAD EAST Ruston LA 71270  </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2000 JOHN HARDEN DR Jacksonville AR 72076 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 4820 SO. CLARK ST Mexico MO 65265 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse>Kiowa street, Leavenworth, KS 66048, États-Unis d'Amérique  </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 1101 HWY 32 WEST Salem MO 65560 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2415 N.W. MAIN ST Miami OK 74354 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 724 STADIUM WEST BLVD Jefferson City MO 65109 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2025 BUS. HWY 60 WEST Dexter MO 63841 </adresse><intensite>1</intensite><Date>2004</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 3108 N BROADWAY Poteau OK 74953 </adresse><intensite>1</intensite><Date>2005</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2050 WEST HWY 76 Branson MO 65616 </adresse><intensite>1</intensite><Date>2005</Date><Client>Agence de communication</Client></data>
+		<data><adresse> W Sypert Street, Nashville, AR 71852, États-Unis </adresse><intensite>1</intensite><Date>2005</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2250 LINCOLN AVENUE Nevada MO 64772 </adresse><intensite>1</intensite><Date>2005</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 101 EAST BLUEMONT AVENUE Manhattan KS 66502 </adresse><intensite>1</intensite><Date>2005</Date><Client>Agence de communication</Client></data>
+		<data><adresse> 2802 WEST KINGS HIGHWAY Paragould AR 72450 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 701 WALTON DRIVE Farmington MO 63640 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 1907 SE WASHINGTON ST. Idabel OK 74745 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 2400 SOUTH MAIN Fort Scott KS 66701 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 1301 HWY 24 EAST Moberly MO 65270 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 4000 GREEN COUNTRY RD Bartlesville OK 74006 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 1705 WEST 11TH STREET Coffeyville KS 67337 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse>521 EAST CHESTNUT ST Junction City KS 66441 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 1802 SOUTH BUSINESS HWY 54 Eldon MO 65026 </adresse><intensite>1</intensite><Date>2005</Date><Client>Particulier</Client></data>
+		<data><adresse> 1815 EAST HIGHLAND DRIVE Jonesboro AR 72401 </adresse><intensite>1</intensite><Date>2005</Date><Client>Cabinet de recrutement</Client></data>
+		<data><adresse> 2451 S. SPRINGFIELD Bolivar MO 65613 </adresse><intensite>1</intensite><Date>2005</Date><Client>Cabinet de recrutement</Client></data>
+		<data><adresse> 1101 WEST RUTH AVE Sallisaw OK 74955 </adresse><intensite>1</intensite><Date>2006</Date><Client>Cabinet de recrutement</Client></data>
+		<data><adresse> 885 HIGHWAY 60 Monett MO 65708 </adresse><intensite>1</intensite><Date>2006</Date><Client>Cabinet de recrutement</Client></data>
+	
+
 	</XMLFile>	

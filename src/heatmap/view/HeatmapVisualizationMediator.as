@@ -1,7 +1,5 @@
 package heatmap.view
 {
-	import com.google.maps.overlays.Marker;
-	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
@@ -11,6 +9,9 @@ package heatmap.view
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
+
+//	import markermanager.MarkerManager;
+	import com.google.maps.overlays.Marker;
 	
 	public class HeatmapVisualizationMediator extends Mediator implements IMediator
 	{
@@ -57,12 +58,13 @@ package heatmap.view
 					/* Add a marker for each point.. */
 					for(var i:int = 0; i < pointsList.length; i++)
 					{
-						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
-						marker.visible = false;
+//						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
+
 						/* ..to the points list, */
-						(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].marker = marker;
+//						(this.viewComponent as HeatmapVisualization).pointsList[i].marker = marker;
 						/* and to the map. */
-						(this.viewComponent as HeatmapVisualization).map.addOverlay(marker);
+//						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto(pointsList[i].marker);
+						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto((this.viewComponent as HeatmapVisualization).pointsList[i].marker);
 					}
 					this.viewComponent.activeButtons();
 					PopUpManager.removePopUp((this.viewComponent as HeatmapVisualization)._window);
@@ -74,7 +76,6 @@ package heatmap.view
 		{
 			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
-		
 
 		private function onExtractDataFromXmlFile(event:DocEvent):void
 		{
