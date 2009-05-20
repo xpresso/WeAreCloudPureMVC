@@ -16,9 +16,11 @@
         		<mx:ComboBox id="criteriaListComponent" width="100%" 
         					 close="{dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection; 
         					 		dataListComponent.selectedIndex = 0;}"
-        		/>
+        		 prompt="Criteria"/>
         		<mx:List id="dataListComponent" 
-        			     width="100%" height="100%" selectable="true" editable="false" backgroundColor="#D1DFDD"/>        		
+        			     width="100%" height="100%" selectable="true" editable="false" backgroundColor="#D1DFDD"
+        			     change="{Heatmap.dataProvider = criteria[2][criteriaListComponent.selectedIndex][dataListComponent.selectedItem];}"
+        		/>        		
             </mx:VBox>        	         		
         	<maps:Map id="map" key="file://" width="100%" height="100%" mapevent_mapready="onMapReady(event)"/>       
         </mx:HBox>
@@ -135,6 +137,7 @@
 			/**
 			 * The heatmap
 			 */
+			[Bindable]
 			private var heatmap:HeatMap;
 			
 			/**
@@ -176,7 +179,10 @@
 			}
 			
 			private function startPlayer():void
-			{			
+			{	
+				dataListComponent.selectable = false;
+				criteriaListComponent.enabled = false;
+				
 				timer.addEventListener(TimerEvent.TIMER,function():void
 				{
 					dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) % (dataListComponent.dataProvider as ArrayCollection).length;
@@ -187,6 +193,8 @@
 	
 			private function stopPlayer():void
 			{
+				dataListComponent.selectable = true;
+				criteriaListComponent.enabled = true;
 				timer.stop();
 			}
 			
