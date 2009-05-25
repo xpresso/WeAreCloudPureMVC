@@ -101,6 +101,7 @@
 
 	<mx:Script>
 		<![CDATA[
+			import com.google.maps.overlays.GroundOverlay;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
 
@@ -183,7 +184,7 @@
 					                               [criteriaListComponent.selectedIndex]
 					                               [dataListComponent.selectedItem];
 
-					markerManager.clearMarkers();
+					// Add all markers to the map.
 					for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
 					{
 						markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
@@ -201,9 +202,12 @@
 			{
 				timer.stop();
 				Heatmap.dataProvider = pointsList;
+
+				// Clear current markers..
 				markerManager.clearMarkers();
 				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
 				{
+					// ..before adding all markers.
 					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
 				}
 			}

@@ -6,29 +6,34 @@
  * Extended by Marcus Schiesser.
  *
  * Typo changed from original MarkerManager to fit our project.
+ * Changed constants too.
+ * get gridWidth() added.
  *
  * Licensed under the Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0.
  */
 package markermanager
 {
+	import com.google.maps.LatLng;
 	import com.google.maps.LatLngBounds;
 	import com.google.maps.MapMoveEvent;
-	import com.google.maps.LatLng;
-	
+	import com.google.maps.MapMouseEvent;
+	import com.google.maps.InfoWindowOptions;
 	import com.google.maps.interfaces.IMap;
 	import com.google.maps.interfaces.IProjection;
-	
 	import com.google.maps.overlays.Marker;
-
+	import com.google.maps.overlays.MarkerOptions;
+	
+	import flash.display.Sprite;
+	import flash.events.MouseEvent;
 	import flash.geom.Point;
 
 	public class MarkerManager
 	{
 
 	// Static constants:
-	public static const DEFAULT_TILE_SIZE:Number = 768; //1024 originaly;
+	public static const DEFAULT_TILE_SIZE:Number = 768; //1024;
 	public static const DEFAULT_MAX_ZOOM:Number = 17;
-	public static const DEFAULT_BORDER_PADDING:Number = 100;
+	public static const DEFAULT_BORDER_PADDING:Number = 10; //100;
 	public static const MERCATOR_ZOOM_LEVEL_ZERO_RANGE:Number = 256;
 
 	private var _map:IMap;
@@ -113,6 +118,42 @@ package markermanager
 
 	private function _addOverlay(marker:Marker):void
 	{
+		// Markers will appears as white circles.
+		var circle:Sprite = new Sprite();
+		circle.graphics.beginFill(0xFFFFFF, 0.0); // Initially fully transparent.
+		circle.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+		circle.graphics.endFill();
+
+		// Marker will appear on mouse_over.
+		circle.addEventListener(MouseEvent.MOUSE_OVER, function(event:MouseEvent):void
+			{
+				event.target.graphics.beginFill(0xFFFFFF, 0.8); // Visible
+				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+				event.target.graphics.endFill();
+			});
+		// And disappear on mouse_out.
+		circle.addEventListener(MouseEvent.MOUSE_OUT, function(event:MouseEvent):void
+			{
+				event.target.graphics.clear();
+				event.target.graphics.beginFill(0xFFFFFF, 0.0); // Fully transparent.
+				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+				event.target.graphics.endFill();
+			});
+
+		var markerOptions:MarkerOptions = new MarkerOptions({
+			clickable: true, // To display informations.
+			draggable: false,
+			hasShadow: false,
+			icon: circle
+		});
+		marker.setOptions(markerOptions);
+
+		marker.addEventListener(MapMouseEvent.CLICK, function(event:MapMouseEvent):void
+			{
+				//marker.openInfoWindow(new InfoWindowOptions({content: (viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].toString()}));
+				marker.openInfoWindow(new InfoWindowOptions({content: "Toto"}));
+			});
+
 		this._map.addOverlay(marker);
 		this._shownMarkers++;
 	}
@@ -141,16 +182,21 @@ package markermanager
 		this._resetManager();
 	}
 
+	public function get gridWidth():Number
+	{
+		return this._gridWidth[this._mapZoom];
+	}
+
 	/**
 	 * Gets the tile coordinate for a given latlng point.
 	 *
 	 * @param {LatLng} latlng  The geographical point.
 	 * @param {Number} zoom  The zoom level.
-	 * @param {GSize} padding  The padding used to shift the pixel coordinate.
+	 * @param {Point} padding  The padding used to shift the pixel coordinate.
 	 *
 	 * Used for expanding a bounds to include an extra padding of pixels surrounding the bounds.
 	 *
-	 * @return {GPoint}  The point in tile coordinates.
+	 * @return {Point}  The point in tile coordinates.
 	 */
 	private function _getTilePoint(latlng:LatLng, zoom:Number, padding:Point):Point
 	{
@@ -255,7 +301,7 @@ package markermanager
 	/**
 	 * Reacts to a notification from a marker that it has moved to a new location.
 	 *
-	 * It scans the grid all all zoom levels and moves the marker from the old grid location to a new grid location.
+	 * It scans the grid at all zoom levels and moves the marker from the old grid location to a new grid location.
 	 *
 	 * @param {Marker} marker  The marker that moved.
 	 * @param {LatLng} oldLatLng  The old position of the marker.
@@ -319,7 +365,7 @@ package markermanager
 	 * Searches at every zoom level to find grid cell that marker would be in, removes from that array if found.
 	 * Also removes marker with removeOverlay if visible.
 	 *
-	 * @param {GMarker} marker  The marker to delete.
+	 * @param {Marker} marker  The marker to delete.
 	 */
 	public function removeMarker(marker:Marker):void
 	{
@@ -477,9 +523,9 @@ package markermanager
 	 *
 	 * @param {LatLngBounds} bounds  The geographical bounds.
 	 * @param {Number} zoom  The zoom level of the bounds.
-	 * @param {GSize} swPadding  The padding in pixels to extend beyond the given bounds.
-	 * @param {GSize} nePadding  The padding in pixels to extend beyond the given bounds.
-	 * @return {GBounds}  The bounds in grid space.
+	 * @param {Point} swPadding  The padding in pixels to extend beyond the given bounds.
+	 * @param {Point} nePadding  The padding in pixels to extend beyond the given bounds.
+	 * @return {Bounds}  The bounds in grid space.
 	 */
 	private function _getGridBounds(bounds:LatLngBounds, zoom:Number, swPadding:Point, nePadding:Point):GridBounds
 	{
@@ -498,7 +544,7 @@ package markermanager
 		}
 		if (ne.x - sw.x  + 1 >= gw)
 		{
-	  		// Computed grid bounds are larger than the world; truncate.
+	  		// Computed grid bounds are larger than the world, truncate.
 			sw.x = 0;
 			ne.x = gw - 1;
 		}

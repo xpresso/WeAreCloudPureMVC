@@ -13,9 +13,9 @@ package markermanager
 
 	/**
 	 * A Bounds is defined by minimum and maximum X and Y coordinates on a plane.
-	 * @param {Array.<Point>} opt_points  Points which this Bound must contain.
 	 *
 	 * @constructor
+	 * @param {Array.<Point>} opt_points  Points which this Bound must contain.
 	 */
 	public function GridBounds(opt_points:Array):void
 	{
