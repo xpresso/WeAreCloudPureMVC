@@ -140,7 +140,9 @@
 			public var pointsList:ArrayCollection = new ArrayCollection();
 			public var markerManager:MarkerManager;
 			public var criteria:Array = new Array(3);
+			
 			public var timer:Timer = new Timer(2500);
+			
 			public var _window:ProgressBarPopUp = new ProgressBarPopUp();
 			
 			/**
@@ -164,20 +166,24 @@
 				file.addEventListener(Event.SELECT, selectHandler);
 				file.addEventListener(Event.COMPLETE, completeHandler);
 				
-				//timer = new Timer(2500);
+
 				timer.addEventListener(TimerEvent.TIMER,function():void
 					{
+						//On selectionne la valeur suivante dans le menu de gauche.
 						dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) %
 						                                  (dataListComponent.dataProvider as ArrayCollection).length;
+						
+						//On affiche les points correspondant à cette valeur sur la heatmap                          
 						Heatmap.dataProvider = criteria[2]
 						                               [criteriaListComponent.selectedIndex]
 						                               [dataListComponent.selectedItem];
-	
+				
+					/*
 						markerManager.clearMarkers();
 						for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
 						{
 							markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-						}
+						}*/
 					});
 			}
 
