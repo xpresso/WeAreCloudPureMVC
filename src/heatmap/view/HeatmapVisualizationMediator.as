@@ -1,5 +1,8 @@
 package heatmap.view
 {
+	import com.google.maps.MapZoomEvent;
+	import com.google.maps.overlays.Marker;
+	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
@@ -9,9 +12,6 @@ package heatmap.view
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
-
-//	import markermanager.MarkerManager;
-	import com.google.maps.overlays.Marker;
 	
 	public class HeatmapVisualizationMediator extends Mediator implements IMediator
 	{
@@ -55,16 +55,16 @@ package heatmap.view
 					(this.viewComponent as HeatmapVisualization).pointsList = pointsList;
 					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsList;
 
-					/* Add a marker for each point.. */
+					// Add a marker for each point.
 					for(var i:int = 0; i < pointsList.length; i++)
 					{
-//						var marker:Marker = new Marker((this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
+						var marker:Marker = new Marker(
+							(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
 
-						/* ..to the points list, */
-//						(this.viewComponent as HeatmapVisualization).pointsList[i].marker = marker;
-						/* and to the map. */
-//						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto(pointsList[i].marker);
-						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto((this.viewComponent as HeatmapVisualization).pointsList[i].marker);
+						// Add each marker to the pointsList.
+						(this.viewComponent as HeatmapVisualization).pointsList[i].marker = marker;
+						// And to the map.
+						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto(pointsList[i].marker);
 					}
 					this.viewComponent.activeButtons();
 					PopUpManager.removePopUp((this.viewComponent as HeatmapVisualization)._window);
