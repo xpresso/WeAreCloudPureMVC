@@ -6,7 +6,6 @@ package heatmap.view
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
-	
 	import mx.collections.ArrayCollection;
 	import mx.managers.PopUpManager;
 	
@@ -67,6 +66,7 @@ package heatmap.view
 						// And to the map.
 						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto(pointsList[i].marker);
 					}
+					this.viewComponent.activeButtons();
 					PopUpManager.removePopUp((this.viewComponent as HeatmapVisualization)._window);
 					break;
 			}
