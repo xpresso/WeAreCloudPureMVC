@@ -1,17 +1,19 @@
 package hmp
 {
+	import com.google.maps.InfoWindowOptions;
 	import com.google.maps.LatLng;
+	import com.google.maps.MapMouseEvent;
 	import com.google.maps.overlays.Marker;
-	import com.google.maps.overlays.MarkerOptions;
 	import com.google.maps.services.ClientGeocoder;
 	import com.google.maps.services.GeocodingEvent;
+	
 	import flash.events.Event;
-	import flash.utils.Dictionary;	
+	import flash.geom.Point;
+	import flash.utils.Dictionary;
+	
 	import heatmap.model.HeatmapProxy;
+	
 	import mx.collections.ArrayCollection;
-
-	import com.google.maps.MapMouseEvent;
-	import com.google.maps.InfoWindowOptions;
 	
 	/**
 	 * An object HeatmapPoint is a localisation (the Point heatPoint, initialized by the coordinates x and y)
@@ -137,10 +139,14 @@ package hmp
 					{
 						/* Fill in the attibutes */
 						marker = new Marker(placemarks[0].point);
-						var html:String = "<b>" + intensity + " points" + "</b> <br/>" + address;
+						var html:String = "<b>" + intensity + "</b> <br/>" + address;
 						marker.addEventListener(MapMouseEvent.CLICK, function(event:MapMouseEvent):void
 						{
-						    marker.openInfoWindow(new InfoWindowOptions({contentHTML:html}));
+							var infoWindowOptions:InfoWindowOptions = new InfoWindowOptions();
+							infoWindowOptions.contentHTML = html;
+							infoWindowOptions.pointOffset = new Point(0, 0);
+
+						    marker.openInfoWindow(infoWindowOptions);
 						});
 
 						latLng = marker.getLatLng();
