@@ -1,11 +1,11 @@
 package heatmap.view
 {
-	import com.google.maps.MapZoomEvent;
 	import com.google.maps.overlays.Marker;
-	
+
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
+	
 	import mx.collections.ArrayCollection;
 	import mx.managers.PopUpManager;
 	
@@ -58,12 +58,9 @@ package heatmap.view
 					// Add a marker for each point.
 					for(var i:int = 0; i < pointsList.length; i++)
 					{
-						var marker:Marker = new Marker(
-							(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].latLng);
+						var marker:Marker = (this.viewComponent as HeatmapVisualization).pointsList[i].marker;
 
-						// Add each marker to the pointsList.
-						(this.viewComponent as HeatmapVisualization).pointsList[i].marker = marker;
-						// And to the map.
+						// Add each marker to the map.
 						(this.viewComponent as HeatmapVisualization).markerManager.addMarkerAuto(pointsList[i].marker);
 					}
 					this.viewComponent.activeButtons();

@@ -16,8 +16,6 @@ package markermanager
 	import com.google.maps.LatLng;
 	import com.google.maps.LatLngBounds;
 	import com.google.maps.MapMoveEvent;
-	import com.google.maps.MapMouseEvent;
-	import com.google.maps.InfoWindowOptions;
 	import com.google.maps.interfaces.IMap;
 	import com.google.maps.interfaces.IProjection;
 	import com.google.maps.overlays.Marker;
@@ -26,6 +24,7 @@ package markermanager
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+
 
 	public class MarkerManager
 	{
@@ -121,14 +120,14 @@ package markermanager
 		// Markers will appears as white circles.
 		var circle:Sprite = new Sprite();
 		circle.graphics.beginFill(0xFFFFFF, 0.0); // Initially fully transparent.
-		circle.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+		circle.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]);
 		circle.graphics.endFill();
 
 		// Marker will appear on mouse_over.
 		circle.addEventListener(MouseEvent.MOUSE_OVER, function(event:MouseEvent):void
 			{
 				event.target.graphics.beginFill(0xFFFFFF, 0.8); // Visible
-				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]);
 				event.target.graphics.endFill();
 			});
 		// And disappear on mouse_out.
@@ -136,23 +135,17 @@ package markermanager
 			{
 				event.target.graphics.clear();
 				event.target.graphics.beginFill(0xFFFFFF, 0.0); // Fully transparent.
-				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]*3);
+				event.target.graphics.drawCircle(0, 0, _gridWidth[_mapZoom]);
 				event.target.graphics.endFill();
 			});
 
-		var markerOptions:MarkerOptions = new MarkerOptions({
-			clickable: true, // To display informations.
-			draggable: false,
-			hasShadow: false,
-			icon: circle
-		});
+		var markerOptions:MarkerOptions = new MarkerOptions();
+		markerOptions.clickable = true; // To display informations.
+		markerOptions.draggable = false;
+		markerOptions.hasShadow = false;
+		markerOptions.icon = circle;
 		marker.setOptions(markerOptions);
 
-		marker.addEventListener(MapMouseEvent.CLICK, function(event:MapMouseEvent):void
-			{
-				//marker.openInfoWindow(new InfoWindowOptions({content: (viewComponent as HeatmapVisualization).Heatmap.dataProvider[i].toString()}));
-				marker.openInfoWindow(new InfoWindowOptions({content: "Toto"}));
-			});
 
 		this._map.addOverlay(marker);
 		this._shownMarkers++;

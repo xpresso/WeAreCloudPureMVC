@@ -2,12 +2,16 @@ package hmp
 {
 	import com.google.maps.LatLng;
 	import com.google.maps.overlays.Marker;
+	import com.google.maps.overlays.MarkerOptions;
 	import com.google.maps.services.ClientGeocoder;
 	import com.google.maps.services.GeocodingEvent;
 	
 	import flash.events.Event;
 	
 	import mx.collections.ArrayCollection;
+
+	import com.google.maps.MapMouseEvent;
+	import com.google.maps.InfoWindowOptions;
 	
 	/**
 	 * An object HeatmapPoint is a localisation (the Point heatPoint, initialized by the coordinates x and y)
@@ -90,6 +94,12 @@ package hmp
 					if (placemarks.length > 0) 
 					{
 						marker = new Marker(placemarks[0].point);
+						var html:String = "<b>" + intensity + " points" + "</b> <br/>" + address;
+						marker.addEventListener(MapMouseEvent.CLICK, function(event:MapMouseEvent):void
+						{
+						    marker.openInfoWindow(new InfoWindowOptions({contentHTML:html}));
+						});
+
 						latLng = marker.getLatLng(); //To uncomment
 						
 						geocodedPointsList.addItem(heatMapPoint); //To uncomment
