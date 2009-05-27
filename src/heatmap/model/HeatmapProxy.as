@@ -1,8 +1,11 @@
 package heatmap.model
 {
+		
 	import flash.events.Event;
+	import flash.events.TimerEvent;
 	import flash.net.FileReference;
 	import flash.utils.Dictionary;
+	import flash.utils.Timer;
 	
 	import heatmap.ApplicationFacade;
 	
@@ -13,13 +16,11 @@ package heatmap.model
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
 	
-	import flash.utils.Timer;
-    import flash.events.TimerEvent;
-
-
 	public class HeatmapProxy extends Proxy implements IProxy
 	{
 		public static const NAME:String = 'heatmapProxy';
+		public static const NB_BAL_TO_IGNORE:int = 2; /* Adresse & intensite */
+		public static var NB_BAL_TO_CARE:int;
 		
 		public function HeatmapProxy(data:Object=null)
 		{
@@ -37,95 +38,75 @@ package heatmap.model
 	        var XMLFile:XML = new XML(fileRef.data);
 	        var pointsList:ArrayCollection = new ArrayCollection();
 
-			/* Contruction de la liste des critères */				
-			const NB_BAL_TO_IGNORE:int = 2; /* Long - Lat - intensite */
-			const NB_BAL_TO_CARE:int = (XMLFile.children()[0] as XML).children().length()-NB_BAL_TO_IGNORE;
+			/* Contruction of the criteria list */			
+			NB_BAL_TO_CARE = (XMLFile.children()[0] as XML).children().length()-NB_BAL_TO_IGNORE;
 			
 			var criteriaName:Array = new Array(NB_BAL_TO_CARE);
 	    	var criteriaContent:Array = new Array(NB_BAL_TO_CARE);
 	    	var criteriaDictionary:Array = new Array(NB_BAL_TO_CARE);
 	    	
-	    	//TODO Recupérer les bons noms de balises
+	    	//Retrieve all tags' name
 	    	var str:String = new String((XMLFile.children()[0] as XML).children().toString());
 	    	var names:Array = str.match(/<[a-zA-Z]*>/g);
     		
 	    	for(var k:int = 0 ; k < NB_BAL_TO_CARE ; k++)
 	    	{
+	    		//Retrieve criteria tags' name
 	    		criteriaName[k] = (names[k+NB_BAL_TO_IGNORE] as String).substring(1,(names[k+NB_BAL_TO_IGNORE] as String).length-1);
+	    		
+	    		/* Initialization of the lists */
 	    		criteriaContent[k] = new ArrayCollection();
 	    		criteriaDictionary[k] = new Dictionary();
 	    	}
 	    	
-			var data:XML = new XML();
-			var indice:String = new String();
-			
+			var currentData:XML = new XML();
+						
+			/* Construction of the points list */
 	    	for(var i:int = 0; i < XMLFile.data.length() ; i++)
 	        {
-	        	data = XMLFile.data[i];
+	        	currentData = XMLFile.data[i];
 
-	    		pointsList.addItem(new HeatmapPoint(data.adresse, data.intensite));
-	    		//, new LatLng(data.lat,data.long)));
-	        	//TODO delete new Latlng(), date and libelle and change adresse;
-	    		for(var j:int=0 ; j < NB_BAL_TO_CARE ; j++)
-	    		{
-	    			//La valeur de la balise j qui nous interesse
-	    			indice = data.children()[j+NB_BAL_TO_IGNORE];
-	    			
-	    			//Si cette entrée n'existe pas dans le dictionnaire, alors on la créer, et on l'ajoute à la liste des valeurs pour cette balise j.
-	    			if (criteriaDictionary[j][indice] == null)
-	    			{
-	    				(criteriaContent[j] as ArrayCollection).addItem(indice);
-	    				criteriaDictionary[j][indice] = new ArrayCollection();
-	    			}					
-					//A cette entrée, on ajoute l'objet que l'on vient de créer.
-	    			(criteriaDictionary[j][indice] as ArrayCollection).addItem(pointsList[pointsList.length -1]);
-	    		}
+				var criteriaValue:Array = new Array(NB_BAL_TO_CARE);
+				
+				for(var j:int=0 ; j < NB_BAL_TO_CARE ; j++)
+	    			//Retrieve criteria value for this point
+	    			criteriaValue[j] = currentData.children()[j+NB_BAL_TO_IGNORE];
+	    		
+	    		pointsList.addItem(new HeatmapPoint(currentData.adresse, currentData.intensite, criteriaValue));
 	        }
-	       sendNotification(ApplicationFacade.DATA_EXTRACTED, [pointsList,[criteriaName, criteriaContent, criteriaDictionary]]);
+	        
+	        sendNotification(ApplicationFacade.DATA_EXTRACTED, [pointsList,[criteriaName, criteriaContent, criteriaDictionary]]);
 		}
 		
-		public function geocodeAddresses(pointsList:ArrayCollection):void
+		public function geocodeAddresses(pointsList:ArrayCollection, criteria:Array):void
 		{
 			var geocodedPointsList:ArrayCollection = new ArrayCollection();
 			var count:int = 0;
 			var timer:Timer = new Timer(170);
 			var i:int = 0;
 			
-			timer.addEventListener(TimerEvent.TIMER, function():void
+			timer.addEventListener(TimerEvent.TIMER, 
+				function():void
 				{
 					if ( i == pointsList.length ) 
 					{timer.stop();}
 					else 
-					{ 	(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
+					{ 	(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList, criteria);
 						i++;
 					}
 				});
-			timer.start();	
-			
-			geocodedPointsList.addEventListener(HeatmapPoint.GEOCODEDDATA, 
+				
+			geocodedPointsList.addEventListener(HeatmapPoint.GEOCODED_DATA, 
 				function(event:Event):void 
 				{
 					count++;
-					//trace(count +" || "+pointsList.length+" || "+geocodedPointsList.length);
+					
 					if ( count == pointsList.length )
-						sendNotification(ApplicationFacade.GEOCODING_COMPLETE, geocodedPointsList);
-		//			else { 
-		//						i++;
-		//						(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
+						sendNotification(ApplicationFacade.GEOCODING_COMPLETE, [geocodedPointsList , criteria]);
 					
-		//			}
-					
-				});
+				});	
 			
-			
-		//	(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
-			
-			
-			
-		//	for (var i:int = 0 ; i < pointsList.length ; i++)
-		//	{
-	//			(pointsList[i] as HeatmapPoint).geocodeAddress(geocodedPointsList);
-	//		} 						
+			timer.start();					
 		}
 	}
 }

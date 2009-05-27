@@ -1,9 +1,8 @@
 package heatmap.controler
-{
-	
-	import heatmap.model.HeatmapProxy;
-	
+{	
 	import mx.collections.ArrayCollection;
+		
+	import heatmap.model.HeatmapProxy;
 	
 	import org.puremvc.as3.multicore.interfaces.ICommand;
 	import org.puremvc.as3.multicore.interfaces.INotification;
@@ -14,7 +13,7 @@ package heatmap.controler
 		override public function execute(notification:INotification):void
 		{
 			var proxy:HeatmapProxy = facade.retrieveProxy(HeatmapProxy.NAME) as HeatmapProxy;
-			proxy.geocodeAddresses(notification.getBody() as ArrayCollection);
+			proxy.geocodeAddresses(notification.getBody()[0] as ArrayCollection,notification.getBody()[1] as Array);
 		}
 
 	}

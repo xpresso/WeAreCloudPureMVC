@@ -6,6 +6,9 @@ package hmp
 	import com.google.maps.services.GeocodingEvent;
 	
 	import flash.events.Event;
+	import flash.utils.Dictionary;
+	
+	import heatmap.model.HeatmapProxy;
 	
 	import mx.collections.ArrayCollection;
 	
@@ -15,20 +18,23 @@ package hmp
 	 **/
 	public class HeatmapPoint
 	{
+		public static const GEOCODED_DATA:String                  = 'geocodedData';
+		
 		private var _address:String;
 		private var _intensity:Number;
+		private var _criteriaValue:Array;
 		private var _latLng:LatLng;
 		private var _marker:Marker;
 		
-		public static const GEOCODEDDATA:String                  = 'geocodedData';
 		/**
 		 * Constructor of the HeatmapPoint
 		 **/
-		public function HeatmapPoint(address:String, intensity:Number, latLng:LatLng = null, 
-									 marker:Marker = null)
+		public function HeatmapPoint(address:String, intensity:Number, criteriaValue:Array = null,
+									 latLng:LatLng = null, marker:Marker = null)
 		{
 			this._address = address;
 			this._intensity = intensity;
+			this._criteriaValue = criteriaValue;
 			this._latLng = latLng;
 			this._marker = marker;
 		}
@@ -72,38 +78,69 @@ package hmp
 			this._marker = marker;
 		}
 		
-		public function toString():String
+		public function get criteriaValue():Array
 		{
-			return this._address.toString();
+			return this._criteriaValue;
 		}
 		
-		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
+		public function set criteria(criteriaValue:Array):void
+		{
+			this._criteriaValue = criteriaValue;
+		}
+
+		public function toString():String
+		{
+			return this._address.toString()+this._criteriaValue.toString() +"\n";
+		}
+			    			
+		public function geocodeAddress(geocodedPointsList:ArrayCollection, criteria:Array):void
 		{
 			var geocoder:ClientGeocoder = new ClientGeocoder();
             var heatMapPoint:Object = this;
             
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS,
-				function(event:GeocodingEvent):void {
+				function(event:GeocodingEvent):void 
+				{
 					trace("Geocoding success");
-					//geocodedPointsList.addItem(heatMapPoint); //TO delete
+
 					var placemarks:Array = event.response.placemarks;
 					if (placemarks.length > 0) 
 					{
+						/* Fill in the attibutes */
 						marker = new Marker(placemarks[0].point);
-						latLng = marker.getLatLng(); //To uncomment
+						latLng = marker.getLatLng();
 						
-						geocodedPointsList.addItem(heatMapPoint); //To uncomment
-						geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
+						/* Update criteria list */
+						for( var j:int = 0; j < HeatmapProxy.NB_BAL_TO_CARE ; j++)
+						{	
+							//If this entry doesn't exist in the dictonary, then we add it to the dictionary and to the criteria value list
+							if ((criteria[2][j] as Dictionary)
+										 [criteriaValue[j].toString()] == null)
+							{
+			    				(criteria[1][j] as ArrayCollection).addItem(criteriaValue[j].toString());
+			    				criteria[2][j][criteriaValue[j].toString()] = new ArrayCollection();
+		    				}
+		    				//Add the current point to the current entry in the points list of the crierion value
+		    				(criteria[2][j][criteriaValue[j].toString()] as ArrayCollection).addItem(heatMapPoint);
+						} 
+						
+						//Add the point to the successfull geocoded point list
+						geocodedPointsList.addItem(heatMapPoint);
+						
+						//Notify that the geocoding for this point is complete
+						geocodedPointsList.dispatchEvent(new Event(GEOCODED_DATA));
 					}
 					else
-						geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
+						//Notify that the geocoding for this point is complete
+						geocodedPointsList.dispatchEvent(new Event(GEOCODED_DATA));
 				});
 				
 			geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,
-				function(event:GeocodingEvent):void {
+				function(event:GeocodingEvent):void 
+				{
 					trace("Geocoding failed");
-					//geocodedPointsList.addItem(heatMapPoint); //TO delete
-					geocodedPointsList.dispatchEvent(new Event(GEOCODEDDATA));
+					//Notify that the geocoding for this point is complete
+					geocodedPointsList.dispatchEvent(new Event(GEOCODED_DATA));
 				});
 				
 			geocoder.geocode(this.address);

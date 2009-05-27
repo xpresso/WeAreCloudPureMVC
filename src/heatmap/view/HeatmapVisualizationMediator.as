@@ -1,11 +1,11 @@
 package heatmap.view
 {
-	import com.google.maps.MapZoomEvent;
 	import com.google.maps.overlays.Marker;
 	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
+	
 	import mx.collections.ArrayCollection;
 	import mx.managers.PopUpManager;
 	
@@ -40,18 +40,17 @@ package heatmap.view
 			switch(notification.getName())
 			{
 				case ApplicationFacade.DATA_EXTRACTED:				
-					var pointsListToGeocode:ArrayCollection = notification.getBody()[0] as ArrayCollection;
+					(this.viewComponent as HeatmapVisualization)._window.progressBar.label = "Geocoding addresses";
+					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, notification.getBody() as Array);
+				break;
+				
+				case ApplicationFacade.GEOCODING_COMPLETE:
+					var pointsList:ArrayCollection = notification.getBody()[0] as ArrayCollection;
 					var criteria:Array = notification.getBody()[1] as Array;									
 					
 					(this.viewComponent as HeatmapVisualization).criteria = criteria;
 					(this.viewComponent as HeatmapVisualization).criteriaListComponent.dataProvider = criteria[0];
-					(this.viewComponent as HeatmapVisualization)._window.progressBar.label = "Geocoding addresses";
-					sendNotification(ApplicationFacade.GEOCODE_ADDRESSES, pointsListToGeocode);
-				break;
-				
-				case ApplicationFacade.GEOCODING_COMPLETE:
-					var pointsList:ArrayCollection = notification.getBody() as ArrayCollection;
-
+					
 					(this.viewComponent as HeatmapVisualization).pointsList = pointsList;
 					(this.viewComponent as HeatmapVisualization).Heatmap.dataProvider = pointsList;
 

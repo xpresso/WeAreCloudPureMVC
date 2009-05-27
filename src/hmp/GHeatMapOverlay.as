@@ -12,7 +12,8 @@ package hmp
 	
 	/**
 	 * Allow the superposition of the map created by Google and the Heatmap
-	 * */
+	 * 
+	 */
 	public class GHeatMapOverlay extends OverlayBase
 	{
 		//The Heatmap
