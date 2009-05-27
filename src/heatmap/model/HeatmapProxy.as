@@ -6,27 +6,36 @@ package heatmap.model
 	import flash.net.FileReference;
 	import flash.utils.Dictionary;
 	import flash.utils.Timer;
-	
 	import heatmap.ApplicationFacade;
-	
 	import hmp.HeatmapPoint;
-	
 	import mx.collections.ArrayCollection;
-	
 	import org.puremvc.as3.multicore.interfaces.IProxy;
 	import org.puremvc.as3.multicore.patterns.proxy.Proxy;
-	
+
+	/**
+	 * The Proxy
+	 */
 	public class HeatmapProxy extends Proxy implements IProxy
 	{
+		/**
+		 * The name of the proxy
+		 */
 		public static const NAME:String = 'heatmapProxy';
 		public static const NB_BAL_TO_IGNORE:int = 2; /* Adresse & intensite */
 		public static var NB_BAL_TO_CARE:int;
 		
+		/**
+		 * Constructor
+		 */
 		public function HeatmapProxy(data:Object=null)
 		{
 			super(NAME, data);
 		}
 		
+		/**
+		 * Load the XML file
+		 * @param fileRef  The reference of the file
+		 */
 		public function loadXmlFile(fileRef:FileReference):void
 		{
 			fileRef.cancel();
@@ -78,6 +87,11 @@ package heatmap.model
 	        sendNotification(ApplicationFacade.DATA_EXTRACTED, [pointsList,[criteriaName, criteriaContent, criteriaDictionary]]);
 		}
 		
+		/**
+		 * Geocode all the addresses of the list
+		 * @param pointsList The list of the points
+		 * @param criteria   The set of criteria
+		 */
 		public function geocodeAddresses(pointsList:ArrayCollection, criteria:Array):void
 		{
 			var geocodedPointsList:ArrayCollection = new ArrayCollection();

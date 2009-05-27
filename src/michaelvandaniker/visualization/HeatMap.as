@@ -10,7 +10,6 @@ package michaelvandaniker.visualization
     import flash.geom.Matrix;
     import flash.geom.Point;
     import flash.geom.Rectangle;
-    
     import mx.collections.ArrayCollection;
     import mx.core.UIComponent;
     import mx.events.CollectionEvent;
@@ -24,6 +23,9 @@ package michaelvandaniker.visualization
 	 * A HeatMap shows the density of a collection of points by giving each point a sphere
 	 * of influence.  The spheres are drawn to a BitmapData, which subsequently gets recolored
 	 * such that pixels with the most accumulated influence have the hottest colors. 
+	 * 
+	 * @author Michael Vandaniker
+	 * @see http://michaelvandaniker.com/blog/2008/07/06/how-to-make-heat-maps-in-flex/
 	 */
     public class HeatMap extends UIComponent
     {

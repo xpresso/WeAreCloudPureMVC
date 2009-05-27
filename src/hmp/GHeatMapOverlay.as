@@ -7,20 +7,22 @@ package hmp
 	import com.google.maps.interfaces.IPane;
 	import com.google.maps.overlays.OverlayBase;
 	import michaelvandaniker.visualization.HeatMap;
-	
 	import flash.events.Event;
 	
 	/**
 	 * Allow the superposition of the map created by Google and the Heatmap
-	 * 
-	 */
+	 * @authors Florent, philippe, marion
+	 * */
 	public class GHeatMapOverlay extends OverlayBase
 	{
-		//The Heatmap
+		/**
+		 * The Heatmap
+		 */
 		public var heatMap:HeatMap;
 		
 		/**
 		 * Constructor
+		 * @param heatMap the heatmap
 		 */
 		public function GHeatMapOverlay(heatMap:HeatMap)
 		{

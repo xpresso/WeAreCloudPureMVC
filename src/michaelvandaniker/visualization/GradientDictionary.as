@@ -1,12 +1,10 @@
 package michaelvandaniker.visualization
-{
-	import flash.display.BitmapData;
-	import flash.display.GradientType;
-	import flash.display.Sprite;
-	import flash.geom.Matrix;
-	
+{	
 	/**
 	 * Contains pregenerated arrays that can be as a HeatMap's gradientArray.
+	 * 
+	 * @author Michael Vandaniker
+	 * @see http://michaelvandaniker.com/blog/2008/07/06/how-to-make-heat-maps-in-flex/
 	 */
 	public class GradientDictionary
 	{
