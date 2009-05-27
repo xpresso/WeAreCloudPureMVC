@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+	<XMLFile>	
+		<data><adresse>18 Rue des Aigrettes  Roques  31120</adresse><intensite>1</intensite><Date>2001</Date><Client>Institut de sondage</Client></data>	
+		<data><adresse>60 79-BYPASS NORTH Magnolia AR 71753</adresse><intensite>1</intensite><Date>2007</Date><Client>Agence de communication</Client></data>
+		<data><adresse>PINECREST PLAZA SHOPPING CTR Brinkley AR 72021</adresse><intensite>1</intensite><Date>2007</Date><Client>Agence de communication</Client></data>
+	</XMLFile>	
