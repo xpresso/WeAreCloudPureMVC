@@ -12,21 +12,10 @@
 					<mx:Button id="pause" label="Pause" width="50%" height="24" click="stopPlayer()"/>
 				</mx:HBox>
 				<mx:Button id="reset" label="Reset" width="100%" height="24" click="resetPlayer()"/>
-				<mx:ComboBox id="criteriaListComponent" width="100%"
-					close="{play.enabled=true;	
-							pause.enabled=true;
-							dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection;
-					        dataListComponent.selectedIndex = 0;
-					        Heatmap.dataProvider = criteria[2]
-															[criteriaListComponent.selectedIndex]
-															[dataListComponent.selectedItem];
-					        }"
-				/>
+				<mx:ComboBox id="criteriaListComponent" width="100%" close="criteriaChoosen()"/>
 				<mx:List id="dataListComponent"
 					width="100%" height="100%" selectable="true" editable="false" backgroundColor="#D1DFDD"
-					click="{Heatmap.dataProvider = criteria[2]
-															[criteriaListComponent.selectedIndex]
-															[dataListComponent.selectedItem];}"
+					click="criterionValueChoosen()"
 	        	/>  
 			</mx:VBox>
 			<maps:Map id="map" key="file://" width="80%" height="100%" mapevent_mapready="onMapReady(event)"/>
@@ -336,14 +325,20 @@
 						                               [criteriaListComponent.selectedIndex]
 						                               [dataListComponent.selectedItem];
 				
-					
-						markerManager.clearMarkers();
-						for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
-						{
-							markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-						}
+					updateMarkersListTodisplay();
 					});
 			}
+			/**
+			 * Update the markers list to display
+			 */
+			 private function updateMarkersListTodisplay():void
+			 {
+	 			markerManager.clearMarkers();
+				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				{
+					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
+				}
+			 }
 			
 			/**
 			 * Dispatch events
@@ -385,6 +380,7 @@
 	 */
 			 
 			 /**
+			 * Start button event handler
 			 * Start the player 
 			 */
 			private function startPlayer():void
@@ -393,17 +389,13 @@
 				{
 					criteriaListComponent.enabled = false;
 					dataListComponent.selectable = true;
-
-					// Add all markers to the map.
-					for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
-					{
-						markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-					}
+					updateMarkersListTodisplay()
 				}
 				timer.start();
 			}
 
 			/**
+			 * Stop button event handler
 			 * Stop the player
 			 */
 			private function stopPlayer():void
@@ -414,20 +406,46 @@
 			}
 
 			/**
+			 * Reset button event handler
 			 * Reset the player (All the initial points will reappear)
 			 */
 			private function resetPlayer():void
 			{
 				stopPlayer();
 				Heatmap.dataProvider = pointsList;
-
-				// Clear current markers..
-				markerManager.clearMarkers();
-				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
-				{
-					// ..before adding all markers.
-					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-				}
+				updateMarkersListTodisplay()
+			}
+			
+			/**
+			 * Combo Box (criteriaListComponent) event handler
+			 * Allow to use the automatic mode, now a criterion is choosen.
+			 * Fill in the List component (dataListComponent) when a criteria is choosen.
+			 * Filter the points to display on the heatmap.
+			 */
+			private function criteriaChoosen():void
+			{
+				play.enabled=true;	
+				pause.enabled=true;
+				
+				dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection;
+		        dataListComponent.selectedIndex = 0;
+		        
+		        Heatmap.dataProvider = criteria[2]
+												[criteriaListComponent.selectedIndex]
+												[dataListComponent.selectedItem];
+				updateMarkersListTodisplay();
+			}
+			
+			/**
+			 * List component (dataListComponent) event handler
+			 * Filter the points to display on the heatmap.
+			 */
+			private function criterionValueChoosen():void
+			{
+				Heatmap.dataProvider = criteria[2]
+												[criteriaListComponent.selectedIndex]
+												[dataListComponent.selectedItem];
+				updateMarkersListTodisplay();
 			}
 			
 	/**
