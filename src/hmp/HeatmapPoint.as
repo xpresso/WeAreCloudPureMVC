@@ -4,22 +4,35 @@ package hmp
 	import com.google.maps.overlays.Marker;
 	import com.google.maps.services.ClientGeocoder;
 	import com.google.maps.services.GeocodingEvent;
-	
 	import flash.events.Event;
-	
 	import mx.collections.ArrayCollection;
 	
 	/**
 	 * An object HeatmapPoint is a localisation (the Point heatPoint, initialized by the coordinates x and y)
-	 * and an intensity (the number intensity).		
+	 * and an intensity (the number intensity).	
+	 * @authors Florent, Philippe, Marion	
 	 **/
 	public class HeatmapPoint
 	{
+		/**
+		 * The postal address of the point
+		 */
 		private var _address:String;
+		/**
+		 * The intensity of the point
+		 */
 		private var _intensity:Number;
+		/**
+		 * The Lat-Long coordinates of the point
+		 */
 		private var _latLng:LatLng;
+		/**
+		 * The marker associated
+		 */
 		private var _marker:Marker;
-		
+		/**
+		 * The geocodded data notification
+		 */
 		public static const GEOCODEDDATA:String                  = 'geocodedData';
 		/**
 		 * Constructor of the HeatmapPoint
@@ -33,11 +46,12 @@ package hmp
 			this._marker = marker;
 		}
 
+
 		public function get address():String
 		{
 			return this._address;
 		}
-		
+
 		public function set address(address:String):void
 		{
 			this._address = address;
@@ -77,6 +91,10 @@ package hmp
 			return this._address.toString();
 		}
 		
+		/**
+		 * Geocode one address
+		 * @param geocodedPointsList The list of the points already geocoded
+		 */
 		public function geocodeAddress(geocodedPointsList:ArrayCollection):void
 		{
 			var geocoder:ClientGeocoder = new ClientGeocoder();

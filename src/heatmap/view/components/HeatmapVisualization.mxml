@@ -11,11 +11,10 @@
 					<mx:Button id="play" label="Play" width="50%" height="24" click="startPlayer()"/>
 					<mx:Button id="pause" label="Pause" width="50%" height="24" click="stopPlayer()"/>
 				</mx:HBox>
-				<mx:Button id="reset" label="Reset" width="100%" height="24"
-					click="resetPlayer()"
-				/>
+				<mx:Button id="reset" label="Reset" width="100%" height="24" click="resetPlayer()"/>
 				<mx:ComboBox id="criteriaListComponent" width="100%"
-					close="{play.enabled=true;	pause.enabled=true;
+					close="{play.enabled=true;	
+							pause.enabled=true;
 							dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection;
 					        dataListComponent.selectedIndex = 0;
 					        Heatmap.dataProvider = criteria[2]
@@ -35,19 +34,26 @@
 		<mx:ControlBar width="100%" height="65">
 		<mx:Grid width="100%" paddingLeft="20">
 			<mx:GridRow width="100%" height="20">
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="1">
 					<mx:Label text="Opacity:" fontWeight="bold"/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="1">
 					<mx:Label text="Radius:" fontWeight="bold"/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="1">
 					<mx:Label text="Colors:" fontWeight="bold"/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="1">
 				</mx:GridItem>
+				
 			</mx:GridRow>
-				<mx:GridRow width="100%" height="95%">
+			
+			<mx:GridRow width="100%" height="95%">
+			
 				<mx:GridItem width="180" height="100%" paddingBottom="2">
 					<mx:HSlider
 					id="opacitySlider"
@@ -60,6 +66,7 @@
 					change="this.Heatmap.alpha = opacitySlider.value;"
 					/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="2">
 					<mx:HSlider
 					id="radiusSlider"
@@ -72,6 +79,7 @@
 					change="heatmap.itemRadius = radiusSlider.value;"
 					/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingBottom="2">
 					<mx:HSlider
 					id="intencitySlider"
@@ -90,9 +98,11 @@
 					        this.Heatmap.intensityValue2 = intencitySlider.values[1];"
 					/>
 				</mx:GridItem>
+				
 				<mx:GridItem width="180" height="100%" paddingTop="0">
 					<mx:Button label="Choose a XML file" click="file.browse(typeFilter)" width="160" />
 				</mx:GridItem>
+				
 			</mx:GridRow>
 		</mx:Grid>
 		</mx:ControlBar>
@@ -110,38 +120,54 @@
 
 	<mx:Script>
 		<![CDATA[
-			import com.google.maps.overlays.GroundOverlay;
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
-
 			import michaelvandaniker.visualization.*;
 			import hmp.*;
 			import heatmap.view.events.DocEvent;
-
 			import com.google.maps.controls.MapTypeControl;
 			import com.google.maps.controls.ScaleControl;
 			import com.google.maps.controls.ZoomControl;
 			import com.google.maps.controls.ZoomControlOptions;
 			import com.google.maps.controls.PositionControl;
 			import com.google.maps.controls.PositionControlOptions;
-
 			import com.google.maps.MapMouseEvent;
 			import com.google.maps.MapZoomEvent;
 			import com.google.maps.LatLng;
-
+			import com.google.maps.overlays.GroundOverlay;
 			import markermanager.MarkerManager;
 
+			/**
+			 * LOAD_XML_DATA notification
+			 */
 			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
+			/**
+			 * EXTRACT_DATA_FROM_XML_FILE notification
+			 */			
 			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
+			/**
+			 * APPLY_CRITERIA notification
+			 */
 			public static const APPLY_CRITERIA:String                     = 'applyCriteria';
-
+			/**
+			 * The reference of the XML file
+			 */
 			private var file:FileReference;
 			private var typeFilter:Array;
 
+			/**
+			 * List of the points
+			 */
 			public var pointsList:ArrayCollection = new ArrayCollection();
 			public var markerManager:MarkerManager;
 			public var criteria:Array = new Array(3);
+			/**
+			 * The timer for the filter (2,5sec)
+			 */
 			public var timer:Timer = new Timer(2500);
+			/**
+			 * The progress bar when loading
+			 */
 			public var _window:ProgressBarPopUp = new ProgressBarPopUp();
 			
 			/**
@@ -153,10 +179,46 @@
 			 * The overlay
 			 */
 			private var heatMapOverlay:GHeatMapOverlay;
-
-			private function initComponent():void
+			
+			
+			public function get Heatmap():HeatMap
 			{
-												
+				return this.heatmap;
+			}
+
+			/**
+			 * Active the interface's buttons 
+			 **/
+			public function activeButtons():void
+			{
+				reset.enabled=true;
+				criteriaListComponent.enabled=true;
+				dataListComponent.enabled=true;
+				opacitySlider.enabled=true;
+				radiusSlider.enabled=true;
+				intencitySlider.enabled=true;
+			}
+			
+			/**
+			 * Desactive the interface's buttons 
+			 **/
+			public function desactiveButtons():void
+			{
+				play.enabled=false;
+				pause.enabled=false;
+				reset.enabled=false;
+				criteriaListComponent.enabled=false;
+				dataListComponent.enabled=false;
+				opacitySlider.enabled=false;
+				radiusSlider.enabled=false;
+				intencitySlider.enabled=false;	
+			}
+
+			/**
+			 * Initialize the components
+			 */
+			private function initComponent():void
+			{												
 				//desactive the buttons
 				desactiveButtons();
 				
@@ -181,71 +243,7 @@
 						}
 					});
 			}
-
-			/**
-			 * Handle select event.
-			 */
-			private function selectHandler(event:Event):void
-			{
-				PopUpManager.addPopUp(_window, this, true);
-				_window.progressBar.label = "Loading file";
-				PopUpManager.centerPopUp(_window);
-
-				var fileRef:FileReference = event.target as FileReference;
-				sendEvent(LOAD_XML_DATA, file);
-			}
-			/**
-			 * Handle select event.
-			 */
-			private function completeHandler(event:Event):void
-			{
-				_window.progressBar.label = "Extracting data";
-				var fileRef:FileReference = event.target as FileReference;
-				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
-			}
-
-			private function startPlayer():void
-			{	
-				if(!timer.running)
-				{
-					criteriaListComponent.enabled = false;
-					dataListComponent.selectable = true;
-
-					// Add all markers to the map.
-					for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
-					{
-						markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-					}
-				}
-				timer.start();
-			}
-
-			private function stopPlayer():void
-			{
-				criteriaListComponent.enabled = true;
-				dataListComponent.selectable = true;				
-				timer.reset();
-			}
-
-			private function resetPlayer():void
-			{
-				stopPlayer();
-				Heatmap.dataProvider = pointsList;
-
-				// Clear current markers..
-				markerManager.clearMarkers();
-				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
-				{
-					// ..before adding all markers.
-					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
-				}
-			}
-
-			private function sendEvent(notificationType:String, body:Object = null):void
-			{
-				dispatchEvent(new DocEvent(notificationType, body));
-			}
-
+			
 			/**
 			 * Called when the map's load is finished. Add google's tools like zoom, position.
 			 */
@@ -286,75 +284,114 @@
 				// Item radius
 				radiusSlider.value = heatmap.itemRadius;
 			}
-
-			public function get Heatmap():HeatMap
-			{
-				return this.heatmap;
-			}
-
-			private function latLonToPoint(o:Object):Object
-			{
-				return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
-			}
-			private function intensityToWeight(o:Object):Object
-			{
-				return ((o as HeatmapPoint).intensity as Number);
-			}
-	
+			
+			/**
+			 * Calculate the new itemRadius when zooming
+			 */
 			private function onZoomEvent(event:MapZoomEvent):void
 			{
 				heatmap.itemRadius = radiusSlider.value;
 			}
 			
 			/**
-			 * Active the interface's buttons 
-			 **/
-			public function activeButtons():void
+			 * Dispatch events
+			 * @param notificationType the name of the notification
+			 */
+			private function sendEvent(notificationType:String, body:Object = null):void
 			{
-				reset.enabled=true;
-				criteriaListComponent.enabled=true;
-				dataListComponent.enabled=true;
-				opacitySlider.enabled=true;
-				radiusSlider.enabled=true;
-				intencitySlider.enabled=true;
+				dispatchEvent(new DocEvent(notificationType, body));
 			}
 			
 			/**
-			 * Desactive the interface's buttons 
-			 **/
-			public function desactiveButtons():void
+			 * Handle select event.
+			 * @param Event File choosen
+			 */
+			private function selectHandler(event:Event):void
 			{
-				play.enabled=false;
-				pause.enabled=false;
-				reset.enabled=false;
-				criteriaListComponent.enabled=false;
-				dataListComponent.enabled=false;
-				opacitySlider.enabled=false;
-				radiusSlider.enabled=false;
-				intencitySlider.enabled=false;	
+				PopUpManager.addPopUp(_window, this, true);
+				_window.progressBar.label = "Loading file";
+				PopUpManager.centerPopUp(_window);
+
+				var fileRef:FileReference = event.target as FileReference;
+				sendEvent(LOAD_XML_DATA, file);
+			}
+			
+			/**
+			 * Handle select event.
+			 */
+			private function completeHandler(event:Event):void
+			{
+				_window.progressBar.label = "Extracting data";
+				var fileRef:FileReference = event.target as FileReference;
+				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
 			}
 
-//			/**
-//			 * Handle MOUSE_MOVE event.
-//			 */
-//			private function onMouseMove(event:MapMouseEvent):void
-//			{
-//				if (Heatmap.dataProvider != null)
-//				{
-//					for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
-//					{
-//						var marker:Marker = heatmap.dataProvider[i].marker;
-//						if (event.latLng.distanceFrom(marker.getLatLng()) < map.getLatLngBounds().getNorthWest().distanceFrom(map.getLatLngBounds().getSouthEast())*0.05)
-//						{
-//							marker.visible = true;
-//						}
-//						else
-//						{
-//							marker.visible = false;
-//						}
-//					}
-//				}
-//			}
+			/**
+			 * Tell to the heatmap where are the latitude and longitude in the heatmappoint structure
+			 */
+			private function latLonToPoint(o:Object):Object
+			{
+				return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
+			}
+			
+			/**
+			 * Tell to the heatmap where are the intensity in the heatmappoint structure
+			 */
+			private function intensityToWeight(o:Object):Object
+			{
+				return ((o as HeatmapPoint).intensity as Number);
+			}
+	
+	/**
+	 * The Player ------------------------------------------------
+	 */
+			 
+			 /**
+			 * Start the player 
+			 */
+			private function startPlayer():void
+			{	
+				if(!timer.running)
+				{
+					criteriaListComponent.enabled = false;
+					dataListComponent.selectable = true;
+
+					// Add all markers to the map.
+					for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+					{
+						markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
+					}
+				}
+				timer.start();
+			}
+
+			/**
+			 * Stop the player
+			 */
+			private function stopPlayer():void
+			{
+				criteriaListComponent.enabled = true;
+				dataListComponent.selectable = true;				
+				timer.reset();
+			}
+
+			/**
+			 * Reset the player (All the initial points will reappear)
+			 */
+			private function resetPlayer():void
+			{
+				stopPlayer();
+				Heatmap.dataProvider = pointsList;
+
+				// Clear current markers..
+				markerManager.clearMarkers();
+				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				{
+					// ..before adding all markers.
+					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
+				}
+			}
+
 		]]>
 	</mx:Script>
 </mx:Canvas>

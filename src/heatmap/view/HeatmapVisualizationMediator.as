@@ -1,22 +1,30 @@
 package heatmap.view
 {
-	import com.google.maps.MapZoomEvent;
 	import com.google.maps.overlays.Marker;
-	
 	import heatmap.ApplicationFacade;
 	import heatmap.view.components.HeatmapVisualization;
 	import heatmap.view.events.DocEvent;
 	import mx.collections.ArrayCollection;
 	import mx.managers.PopUpManager;
-	
 	import org.puremvc.as3.multicore.interfaces.IMediator;
 	import org.puremvc.as3.multicore.interfaces.INotification;
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
 	
+	/**
+	 * The Mediator
+	 * @author Florent, Philippe et Marion
+	 **/
 	public class HeatmapVisualizationMediator extends Mediator implements IMediator
 	{
+		/**
+		 * Name of the mediator 
+		 */
 		public static const NAME:String = 'heatmapVisualizationMediator';
 		
+		/**
+		 * Constructor
+		 * add the event listeners. 
+		 */
 		public function HeatmapVisualizationMediator(viewComponent:Object)
 		{
 			super(NAME, viewComponent);
@@ -25,16 +33,28 @@ package heatmap.view
 			heatmapVisualization.addEventListener(HeatmapVisualization.APPLY_CRITERIA, onApplyCriteria);
 		}
 		
+		/**
+		 * Accessor
+		 */
 		public function get heatmapVisualization():HeatmapVisualization
 		{
 			return viewComponent as HeatmapVisualization;
 		}
-						
+		
+		/**
+		 *  return an array which contains the notifications that interest it. 
+		 * @return Array
+		 */				
 		override public function listNotificationInterests():Array
 		{
 			return [ApplicationFacade.DATA_EXTRACTED, ApplicationFacade.GEOCODING_COMPLETE];
 		}
 		
+		/**
+		 * Handle the Notification
+		 * 
+		 * @param notification
+		 */
 		override public function handleNotification(notification:INotification):void
 		{
 			switch(notification.getName())
@@ -72,16 +92,25 @@ package heatmap.view
 			}
 		}
 		
+		/**
+		 * Send LOAD_XML_DATA notification
+		 */
 		private function onLoadXmlData(event:DocEvent):void
 		{
 			sendNotification(ApplicationFacade.LOAD_XML_DATA, event.body);
 		}
 
+		/**
+		 * Send EXTRACT_DATA_FROM_XML_FILE notification
+		 */
 		private function onExtractDataFromXmlFile(event:DocEvent):void
 		{
 			sendNotification(ApplicationFacade.EXTRACT_DATA_FROM_XML_FILE, event.body);
 		}
 		
+		/**
+		 * Send APPLY_CRITERIA notification
+		 */
 		private function onApplyCriteria(event:DocEvent):void
 		{
 			sendNotification(ApplicationFacade.APPLY_CRITERIA, event.body);
