@@ -1,64 +1,111 @@
 package heatmap
 {
-	import heatmap.controler.ExtractDataFromXmlFileCommand;
-	import heatmap.controler.GeocodeAddressesCommand;
-	import heatmap.controler.LoadXmlDataCommand;
-	import heatmap.controler.startup.ApplicationStartupCommand;
-	
+	import heatmap.controller.LoadXMLDataCommand; // Controller command.
+//	import heatmap.controller.ExtractDataFromXMLFileCommand;
+//	import heatmap.controller.GeocodeAddressesCommand;
+	import heatmap.controller.startup.ApplicationStartupCommand;
+
+	// PureMVC imports.
 	import org.puremvc.as3.multicore.interfaces.IFacade;
 	import org.puremvc.as3.multicore.patterns.facade.Facade;
 
+	/**
+	 * The facade.
+	 *
+	 * @extends Facade
+	 * @implements IFacade
+	 * @author Florent Odier, Philippe Miguet & Marion Trenza.
+	 */
 	public class ApplicationFacade extends Facade implements IFacade
 	{
+		/**
+		 * Facade name.
+		 */
 		public static const NAME:String                               = 'heatmap';
 
-		// Notification constants
+		/**
+		 * STARTUP notification. Sent to launch the application.
+		 */
 		public static const STARTUP:String 							  = 'startup';
-		public static const LOAD_XML_DATA:String                      = 'loadXmlData';
-		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
+		/**
+		 * LOAD_XML_DATA notification. Sent to load datas.
+		 */
+		public static const LOAD_XML_DATA:String                      = 'loadXMLData';
+		/**
+		 * EXTRACT_DATA_FROM_XML_FILE notification. Sent to extract datas.
+		 */
+		public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXMLFile';
+		/**
+		 * DATA_EXTRACTED notification. Sent to notify that datas are extracted.
+		 */
 		public static const DATA_EXTRACTED:String                     = 'dataExtracted';
+		/**
+		 * GEOCODE_ADDRESSES notification. Sent to geocode addresses.
+		 */
 		public static const GEOCODE_ADDRESSES:String                  = 'geocodeAdresses';
+		/**
+		 * GEOCODING_COMPLETE notification. Sent to notifiy that the geocoding is finished.
+		 */
 		public static const GEOCODING_COMPLETE:String                 = 'geocodingComplete';
-		public static const APPLY_CRITERIA:String                     = 'applyCriteria';
-		public static const CRITERIA_APPLICATION_COMPLETE:String      = 'criteriaApplicationComplete';
+		/**
+		 * APPLY_CRITERION notification. Sent to filter the heatmap with new critiria.
+		 */
+		public static const APPLY_CRITERION:String                     = 'applyCriterion';
+		/**
+		 * CRITERION_APPLICATION_COMPLETE notification. Sent to notify that the criterion is applied.
+		 */
+		public static const CRITERION_APPLICATION_COMPLETE:String      = 'criteriaApplicationComplete';
 
-
-		public function ApplicationFacade( key:String )
+		/**
+		 * @constructor
+		 *
+		 * @param {String} key
+		 */
+		public function ApplicationFacade(key:String)
 		{
 			super(key);
 		}
 
+		/**
+		 * Our application.
+		 */
 		public var application:Heatmap;
  
 		/**
-		 * Singleton ApplicationFacade Factory Method
+		 * Get the singleton ApplicationFacade.
+		 *
+		 * @param {String} key
+		 * @return {ApplicationFacade}
 		 */
-		public static function getInstance( key:String ) : ApplicationFacade
+		public static function getInstance(key:String):ApplicationFacade
 		{
-			if ( instanceMap[ key ] == null ) instanceMap[ key ] = new ApplicationFacade( key );
-			return instanceMap[ key ] as ApplicationFacade;
+			if(instanceMap[key] == null)
+			{
+				instanceMap[key] = new ApplicationFacade(key);
+			}
+			return instanceMap[key] as ApplicationFacade;
 		}
 
-		/**
-		 * Register Commands with the Controller
+		/*
+		 * Register commands to the Controller.
 		 */
-		override protected function initializeController( ) : void
+		override protected function initializeController():void
 		{
 			super.initializeController();
-			registerCommand( STARTUP, heatmap.controler.startup.ApplicationStartupCommand  );
-			registerCommand( LOAD_XML_DATA, heatmap.controler.LoadXmlDataCommand  );
-			registerCommand( EXTRACT_DATA_FROM_XML_FILE, heatmap.controler.ExtractDataFromXmlFileCommand );
-			registerCommand( GEOCODE_ADDRESSES, heatmap.controler.GeocodeAddressesCommand );
+			registerCommand(STARTUP, heatmap.controller.startup.ApplicationStartupCommand);
+			registerCommand(LOAD_XML_DATA, heatmap.controller.LoadXMLDataCommand);
+			registerCommand(EXTRACT_DATA_FROM_XML_FILE, heatmap.controller.ExtractDataFromXMLFileCommand);
+			registerCommand(GEOCODE_ADDRESSES, heatmap.controller.GeocodeAddressesCommand);
 		}
 
 		/**
-		 * Application startup
+		 * Start the application.
 		 *
-		 * @param app a reference to the application component
+		 * @param {Heatmap} app Refer to the application component.
 		 */
-		public function startup( app:Heatmap ):void
+		public function startup(app:Heatmap):void
 		{
-			sendNotification( STARTUP, app );
+			sendNotification(STARTUP, app);
 		}
 	}
 }

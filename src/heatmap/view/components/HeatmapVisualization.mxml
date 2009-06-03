@@ -1,100 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Canvas 	xmlns:mx="http://www.adobe.com/2006/mxml"
-			xmlns:flexlib="flexlib.controls.*"
-			xmlns:maps="com.google.maps.*"
-			width="100%" height="100%">
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:flexlib="flexlib.controls.*"
+	xmlns:maps="com.google.maps.*"
+	width="100%" height="100%">
 
-	<mx:Panel width="800" height="550" x="{(width - 800) /2}" y="{(height - 550) / 2 }" title="Heatmap - We are cloud">
-		<mx:HBox width="100%" height="100%" paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
-			<mx:VBox width="20%" height="100%">
-		 		<mx:HBox width="100%">
-					<mx:Button id="play" label="Play" width="50%" height="24" click="startPlayer()"/>
-					<mx:Button id="pause" label="Pause" width="50%" height="24" click="stopPlayer()"/>
+	<mx:Panel
+		width="800" height="550" x="{(width - 800) /2}" y="{(height - 550) / 2 }"
+		title="Heatmap - We are cloud">
+
+
+		<mx:HBox
+			width="100%" height="100%"
+			paddingBottom="5" paddingLeft="5" paddingRight="5" paddingTop="5">
+			<mx:VBox
+				width="20%" height="100%">
+				<mx:HBox
+					width="100%">
+					<mx:Button
+						id="play" label="Play" width="50%" height="24"
+						click="_startPlayer()"/>
+					<mx:Button
+						id="pause" label="Pause" width="50%" height="24"
+						click="_stopPlayer()"/>
 				</mx:HBox>
-				<mx:Button id="reset" label="Reset" width="100%" height="24" click="resetPlayer()"/>
-				<mx:ComboBox id="criteriaListComponent" width="100%" close="criteriaChoosen()"/>
-				<mx:List id="dataListComponent"
-					width="100%" height="100%" selectable="true" editable="false" backgroundColor="#D1DFDD"
-					click="criterionValueChoosen()"
-	        	/>  
+				<mx:Button
+					id="reset" label="Reset" width="100%" height="24"
+					click="_resetPlayer()"/>
+				<mx:ComboBox
+					id="criteriaListComponent" width="100%"
+					close="_criterionChoosen()"/>
+				<mx:List
+					id="dataListComponent" width="100%" height="100%" selectable="true" editable="false"
+					backgroundColor="#D1DFDD"
+					click="_criterionValueChoosen()"/>
 			</mx:VBox>
-			<maps:Map id="map" key="file://" width="80%" height="100%" mapevent_mapready="onMapReady(event)"/>
+			<maps:Map
+				id="map" key="file://" width="80%" height="100%" mapevent_mapready="_onMapReady()"/>
 		</mx:HBox>
-		<mx:ControlBar width="100%" height="65">
-		<mx:Grid width="100%" paddingLeft="20">
-			<mx:GridRow width="100%" height="20">
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="1">
-					<mx:Label text="Opacity:" fontWeight="bold"/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="1">
-					<mx:Label text="Radius:" fontWeight="bold"/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="1">
-					<mx:Label text="Colors:" fontWeight="bold"/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="1">
-				</mx:GridItem>
-				
-			</mx:GridRow>
-			
-			<mx:GridRow width="100%" height="95%">
-			
-				<mx:GridItem width="180" height="100%" paddingBottom="2">
-					<mx:HSlider
-					id="opacitySlider"
-					minimum="0"
-					maximum="1"
-					value="0.7"
-					width="160"
-					liveDragging="true"
-					snapInterval="0.01"
-					change="this.Heatmap.alpha = opacitySlider.value;"
-					/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="2">
-					<mx:HSlider
-					id="radiusSlider"
-					width="160"
-					minimum="1"
-					maximum="50"
-					value="{heatmap.itemRadius}"
-					snapInterval="1"
-					liveDragging="true"
-					change="heatmap.itemRadius = radiusSlider.value;"
-					/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingBottom="2">
-					<mx:HSlider
-					id="intencitySlider"
-					allowTrackClick="true"
-					allowThumbOverlap="false"
-					liveDragging="true"
-					showDataTip="true"
-					dataTipPlacement="top"
-					dataTipOffset="3"
-					showTrackHighlight="true"
-					thumbCount="2"
-					width="160"
-					values="[0, 255]"
-					minimum="0" maximum="255" snapInterval="1"
-					change="this.Heatmap.intensityValue1 = intencitySlider.values[0];
-					        this.Heatmap.intensityValue2 = intencitySlider.values[1];"
-					/>
-				</mx:GridItem>
-				
-				<mx:GridItem width="180" height="100%" paddingTop="0">
-					<mx:Button label="Choose a XML file" click="file.browse(typeFilter)" width="160" />
-				</mx:GridItem>
-				
-			</mx:GridRow>
-		</mx:Grid>
+
+
+		<mx:ControlBar
+			width="100%" height="65">
+			<mx:Grid
+				width="100%" paddingLeft="20">
+				<mx:GridRow
+					width="100%" height="20">
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="1">
+						<mx:Label
+							text="Opacity:" fontWeight="bold"/>
+					</mx:GridItem>
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="1">
+						<mx:Label
+							text="Radius:" fontWeight="bold"/>
+					</mx:GridItem>
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="1">
+						<mx:Label
+							text="Colors:" fontWeight="bold"/>
+					</mx:GridItem>
+	
+				</mx:GridRow>
+				<mx:GridRow
+					width="100%" height="95%">
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="2">
+						<mx:HSlider
+							id="opacitySlider"
+							minimum="0"
+							maximum="1"
+							value="0.7"
+							width="160"
+							liveDragging="true"
+							snapInterval="0.01"
+							change="_heatmap.alpha = opacitySlider.value;"/>
+					</mx:GridItem>
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="2">
+						<mx:HSlider
+							id="radiusSlider"
+							width="160"
+							minimum="1"
+							maximum="50"
+							value="{_heatmap.itemRadius}"
+							snapInterval="1"
+							liveDragging="true"
+							change="_heatmap.itemRadius = radiusSlider.value;"/>
+					</mx:GridItem>
+	
+					<mx:GridItem
+						width="180" height="100%" paddingBottom="2">
+						<mx:HSlider
+							id="intencitySlider"
+							allowTrackClick="true"
+							allowThumbOverlap="false"
+							liveDragging="true"
+							showDataTip="true"
+							dataTipPlacement="top"
+							dataTipOffset="3"
+							showTrackHighlight="true"
+							thumbCount="2"
+							width="160"
+							values="[0, 255]"
+							minimum="0" maximum="255" snapInterval="1"
+							change="_heatmap.intensityValue1 = intencitySlider.values[0];
+							        _heatmap.intensityValue2 = intencitySlider.values[1];"/>
+					</mx:GridItem>
+	
+					<mx:GridItem
+						width="180" height="100%" paddingTop="0">
+						<mx:Button
+							width="160" label="Choose a XML file" click="_file.browse(_typeFilter)"/>
+					</mx:GridItem>
+	
+				</mx:GridRow>
+			</mx:Grid>
 		</mx:ControlBar>
+
+
 	</mx:Panel>
 
 	<mx:Style>
@@ -109,349 +139,339 @@
 
 	<mx:Script>
 		<![CDATA[
+			// Flex imports.
 			import mx.collections.ArrayCollection;
 			import mx.managers.PopUpManager;
-			import michaelvandaniker.visualization.*;
-			import hmp.*;
-			import heatmap.view.events.DocEvent;
+
+			import michaelvandaniker.visualization.*; // Heatmap component.
+			import hmp.*; // Our extensions.
+
+			import heatmap.view.events.DocEvent; // Event PureMVC.
+
+			// Google Maps controls.
 			import com.google.maps.controls.MapTypeControl;
 			import com.google.maps.controls.ScaleControl;
 			import com.google.maps.controls.ZoomControl;
 			import com.google.maps.controls.ZoomControlOptions;
 			import com.google.maps.controls.PositionControl;
 			import com.google.maps.controls.PositionControlOptions;
-			import com.google.maps.MapMouseEvent;
+
+			// Google Maps events.
 			import com.google.maps.MapZoomEvent;
+
+			// Google Maps coordinates.
 			import com.google.maps.LatLng;
-			import com.google.maps.overlays.GroundOverlay;
+
+			// Google Maps Marker manager.
 			import markermanager.MarkerManager;
 
-			/**
-			 * LOAD_XML_DATA notification
-			 */
-			public static const LOAD_XML_DATA:String                      = 'loadXmlData';
-			
-			/**
-			 * EXTRACT_DATA_FROM_XML_FILE notification
-			 */			
-			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXmlFile';
-			
-			/**
-			 * APPLY_CRITERIA notification
-			 */
-			public static const APPLY_CRITERIA:String                     = 'applyCriteria';
-			
-			/**
-			 * The reference of the XML file
-			 */
-			private var file:FileReference;
-			
-			/**
-			 * The filter for the file chooser. (it filters files to show only .xml)
-			 */
-			private var typeFilter:Array;
 
 			/**
-			 * List of the points
+			 * LOAD_XML_DATA notification. Sent to load datas.
+			 */
+			public static const LOAD_XML_DATA:String                      = 'loadXMLData';
+			/**
+			 * EXTRACT_DATA_FROM_XML_FILE notification. Sent to extract datas.
+			 */
+			public static const EXTRACT_DATA_FROM_XML_FILE:String         = 'extractDataFromXMLFile';
+			/**
+			 * APPLY_CRITERION notification. Sent to filter the heatmap with new critiria.
+			 */
+			public static const APPLY_CRITERION:String                     = 'applyCriterion';
+
+
+			/*
+			 * The reference of the XML file.
+			 */
+			private var _file:FileReference;
+			/*
+			 * The filter for the file chooser. (It filters files to show only .xml).
+			 */
+			private var _typeFilter:Array;
+
+
+			/**
+			 * List of points to draw the heatmap.
 			 */
 			public var pointsList:ArrayCollection = new ArrayCollection();
-			
+
 			/**
-			 * The set of criteria: 
-			 * 	- Criteria name
-			 *  - Criteria value
-			 *  - Points list for each criteria name
+			 * The set of criteria:
+			 *  - Criteria names
+			 *  - Criteria values
+			 *  - Points list for each criterion
 			 */
 			public var criteria:Array = new Array(3);
-			
-			/**
-			 *  The marker manager
-			 */
-			public var markerManager:MarkerManager;
-
 
 			/**
-			 * The timer for the filter (2,5sec)
+			 * The timer to switch through filters (2,5sec).
 			 */
 			public var timer:Timer = new Timer(2500);
-			
+
 			/**
-			 * The progress bar when loading
+			 * The progress bar when loading.
 			 */
-			public var _window:ProgressBarPopUp = new ProgressBarPopUp();
+			public var window:ProgressBarPopUp = new ProgressBarPopUp();
 			
 			/**
 			 * The heatmap
 			 */
 			[Bindable]
-			private var heatmap:HeatMap;
-			
-			/**
-			 * The overlay
+			private var _heatmap:HeatMap;
+
+			public function get Heatmap():HeatMap // Dunno why Heatmap works and not heatmap.
+			{
+				return this._heatmap;
+			}
+			/*
+			 * The heatmap overlay.
 			 */
-			private var heatMapOverlay:GHeatMapOverlay;
-			
-			
-			public function get Heatmap():HeatMap
-			{
-				return this.heatmap;
-			}
-
+			private var _heatMapOverlay:GHeatMapOverlay;
 			/**
-			 * Active the interface's buttons 
-			 **/
-			public function activeButtons():void
-			{
-				reset.enabled=true;
-				criteriaListComponent.enabled=true;
-				dataListComponent.enabled=true;
-				opacitySlider.enabled=true;
-				radiusSlider.enabled=true;
-				intencitySlider.enabled=true;
-			}
-			
-			/**
-			 * Desactive the interface's buttons 
-			 **/
-			public function desactiveButtons():void
-			{
-				play.enabled=false;
-				pause.enabled=false;
-				reset.enabled=false;
-				criteriaListComponent.enabled=false;
-				dataListComponent.enabled=false;
-				opacitySlider.enabled=false;
-				radiusSlider.enabled=false;
-				intencitySlider.enabled=false;	
-			}
+			 *  The Marker manager.
+			 */
+			public var markerManager:MarkerManager;
 
-	/**
-	 * The Map ------------------------------------------------
+	/*
+	 * The map. ---------------------------------------------------
 	 */
-			/**
-			 * Called when the map's load is finished. Add google's tools like zoom, position.
+			/*
+			 * Called when the map's is loaded. Add google's tools like zoom, position.
 			 */
-			private function onMapReady(event:Event):void
+			private function _onMapReady():void
 			{
 				markerManager = new MarkerManager(map, {});
-				// Zoom on the map
+				// Zoom on the map.
 				var zoom:ZoomControl = new ZoomControl(new ZoomControlOptions());
 				map.addControl(zoom);
-				map.enableScrollWheelZoom();
+//				map.enableScrollWheelZoom(); Cause errors when scrolling to fast.
 				map.enableContinuousZoom();
-				// Disable double-click to zoom since one click pops-up infos on points.
-				map.setDoubleClickMode(3);
-				// Scale on the map
+				// Scale on the map.
 				var scale:ScaleControl = new ScaleControl();
 				map.addControl(scale);
-				// Position control on the map
+				// Position control on the map.
 				var position:PositionControl = new PositionControl(new PositionControlOptions());
 				map.addControl(position);
-				// Views
+				// Views.
 				var mapContr:MapTypeControl = new MapTypeControl();
 	 			map.addControl(mapContr);
 
-				map.addEventListener(MapZoomEvent.ZOOM_CHANGED, function(event:MapZoomEvent):void
+				// Heatmap.
+				_heatmap.transformationFunction = _latLngToPoint;
+				_heatmap.weightFunction = _intensityToWeight;
+				_heatmap.gradientArray = GradientDictionary.RAINBOW;
+
+				_heatMapOverlay = new GHeatMapOverlay(_heatmap);
+				map.addOverlay(_heatMapOverlay);
+
+				// Item radius.
+				radiusSlider.value = _heatmap.itemRadius;
+				map.addEventListener(MapZoomEvent.ZOOM_CHANGED, function():void
 					{
-						heatmap.itemRadius = radiusSlider.value;
+						_heatmap.itemRadius = radiusSlider.value;
 					});
 
-				// Heatmap
-				this.heatmap = new HeatMap();
-				this.heatmap.transformationFunction = latLonToPoint;
-				this.heatmap.weightFunction = intensityToWeight;
-				this.heatmap.gradientArray = GradientDictionary.RAINBOW;	
+				// Initialization of some components, see below.
+				_initComponent();
+			}
 
-				this.heatMapOverlay = new GHeatMapOverlay(this.heatmap);
-				this.map.addOverlay(this.heatMapOverlay);
-				
-				// Item radius
-				radiusSlider.value = heatmap.itemRadius;
-				
-				/* Initialization of some components */
-				initComponent();
-			}
-			
-			/**
-			 * Calculate the new itemRadius when zooming
+			/*
+			 * Tell to the heatmap where to find the coordinates in the data object (which is a heatMapPoint in our case).
+			 *
+			 * @param {Object} o The data object.
 			 */
-			private function onZoomEvent(event:MapZoomEvent):void
-			{
-				heatmap.itemRadius = radiusSlider.value;
-			}
-			
-			/**
-			 * Tell to the heatmap where are the latitude and longitude in the heatmappoint structure
-			 */
-			private function latLonToPoint(o:Object):Object
+			private function _latLngToPoint(o:Object):Object
 			{
 				return map.fromLatLngToViewport((o as HeatmapPoint).latLng as LatLng);
 			}
 			
-			/**
-			 * Tell to the heatmap where are the intensity in the heatmappoint structure
+			/*
+			 * Tell to the heatmap where to find the intensity in the data object (which is a heatMapPoint in our case).
+			 *
+			 * @param {Object} o The data object.
 			 */
-			private function intensityToWeight(o:Object):Object
+			private function _intensityToWeight(o:Object):Object
 			{
 				return ((o as HeatmapPoint).intensity as Number);
 			}
-	
-	/**
-	 * Initialization of some components ------------------------------------------------
-	 */			
-			/**
-			 * Initialize the components
-			 */
-			private function initComponent():void
-			{												
-				//desactive the buttons
-				desactiveButtons();
-				
-				typeFilter = new FileFilter("Documents (*.xml)", "*.xml") as Array;
-				file = new FileReference();
-				file.addEventListener(Event.SELECT, selectHandler);
-				file.addEventListener(Event.COMPLETE, completeHandler);
-				
 
-				timer.addEventListener(TimerEvent.TIMER,
-					function():void
+	/*
+	 * Initialization of some components. -------------------------
+	 */
+			/**
+			 * Enable interface's buttons. 
+			 */
+			public function enableButtons():void
+			{
+				reset.enabled = true;
+				criteriaListComponent.enabled = true;
+				dataListComponent.enabled = true;
+				opacitySlider.enabled = true;
+				radiusSlider.enabled = true;
+				intencitySlider.enabled = true;
+			}
+
+			/**
+			 * Disable interface's buttons.
+			 */
+			public function disableButtons():void
+			{
+				play.enabled = false;
+				pause.enabled = false;
+				reset.enabled = false;
+				criteriaListComponent.enabled = false;
+				dataListComponent.enabled = false;
+				opacitySlider.enabled = false;
+				radiusSlider.enabled = false;
+				intencitySlider.enabled = false;
+			}
+
+			/*
+			 * Initialize the components.
+			 */
+			private function _initComponent():void
+			{												
+				// Disable buttons.
+				disableButtons();
+
+				_typeFilter = new FileFilter("Documents (*.xml)", "*.xml") as Array;
+				_file = new FileReference();
+				_file.addEventListener(Event.SELECT, _selectHandler);
+				_file.addEventListener(Event.COMPLETE, _completeHandler);
+
+
+				timer.addEventListener(TimerEvent.TIMER, function():void
 					{
-						//On selectionne la valeur suivante dans le menu de gauche.
+						// Select the following value in the left menu.
 						dataListComponent.selectedIndex = (dataListComponent.selectedIndex + 1) %
 						                                  (dataListComponent.dataProvider as ArrayCollection).length;
-						
-						//On affiche les points correspondant à cette valeur sur la heatmap                          
+
+						// We display only the points matching with this value.                         
 						Heatmap.dataProvider = criteria[2]
 						                               [criteriaListComponent.selectedIndex]
 						                               [dataListComponent.selectedItem];
-				
-					updateMarkersListTodisplay();
+
+						_updateMarkersListTodisplay();
 					});
 			}
-			/**
-			 * Update the markers list to display
+
+			/*
+			 * Update the markers list to display.
 			 */
-			 private function updateMarkersListTodisplay():void
+			 private function _updateMarkersListTodisplay():void
 			 {
 	 			markerManager.clearMarkers();
-				for (var i:int = 0; i < Heatmap.dataProvider.length; i++)
+				for(var i:int = 0; i < Heatmap.dataProvider.length; i++)
 				{
 					markerManager.addMarkerAuto(Heatmap.dataProvider[i].marker);
 				}
 			 }
-			
-			/**
-			 * Dispatch events
-			 * @param notificationType the name of the notification
+
+			/*
+			 * Send various events to the mediator.
+			 *
+			 * @param {String} notificationType The name of the notification.
+			 * @param {Object} body The notification body.
 			 */
-			private function sendEvent(notificationType:String, body:Object = null):void
+			private function _sendEvent(notificationType:String, body:Object = null):void
 			{
 				dispatchEvent(new DocEvent(notificationType, body));
 			}
-			
-			/**
-			 * Handle select event.
-			 * @param Event File choosen
+
+			/*
+			 * Handle SELECT event.
+			 *
+			 * @param {Event} event Selected file.
 			 */
-			private function selectHandler(event:Event):void
+			private function _selectHandler(event:Event):void
 			{
-				PopUpManager.addPopUp(_window, this, true);
-				_window.progressBar.label = "Loading file";
-				PopUpManager.centerPopUp(_window);
+				PopUpManager.addPopUp(window, this, true);
+				window.progressBar.label = "Loading file";
+				PopUpManager.centerPopUp(window);
 
 				var fileRef:FileReference = event.target as FileReference;
-				sendEvent(LOAD_XML_DATA, file);
+				_sendEvent(LOAD_XML_DATA, _file);
 			}
-			
-			/**
-			 * Handle complete event.
-			 * @param Event File loaded
+
+			/*
+			 * Handle COMPLETE event.
+			 *
+			 * @param {Event} event File loaded.
 			 */
-			private function completeHandler(event:Event):void
+			private function _completeHandler(event:Event):void
 			{
-				_window.progressBar.label = "Extracting data";
+				window.progressBar.label = "Extracting data";
 				var fileRef:FileReference = event.target as FileReference;
-				sendEvent(EXTRACT_DATA_FROM_XML_FILE, file);
+				_sendEvent(EXTRACT_DATA_FROM_XML_FILE, _file);
 			}
 
-
-	/**
-	 * The Player ------------------------------------------------
+	/*
+	 * The Player. ------------------------------------------------
 	 */
-			 
-			 /**
-			 * Start button event handler
-			 * Start the player 
+			/*
+			 * Start the player. Start button event handler.
 			 */
-			private function startPlayer():void
-			{	
+			private function _startPlayer():void
+			{
 				if(!timer.running)
 				{
 					criteriaListComponent.enabled = false;
 					dataListComponent.selectable = true;
-					updateMarkersListTodisplay()
+					_updateMarkersListTodisplay();
 				}
 				timer.start();
 			}
 
-			/**
-			 * Stop button event handler
-			 * Stop the player
+			/*
+			 * Stop the player. Stop button event handler.
 			 */
-			private function stopPlayer():void
+			private function _stopPlayer():void
 			{
 				criteriaListComponent.enabled = true;
-				dataListComponent.selectable = true;				
+				dataListComponent.selectable = true;
 				timer.reset();
 			}
 
-			/**
-			 * Reset button event handler
-			 * Reset the player (All the initial points will reappear)
+			/*
+			 * Reset the player (All the initial points will reappear). Reset button event handler.
 			 */
-			private function resetPlayer():void
+			private function _resetPlayer():void
 			{
-				stopPlayer();
+				_stopPlayer();
 				Heatmap.dataProvider = pointsList;
-				updateMarkersListTodisplay()
+				_updateMarkersListTodisplay();
 			}
-			
-			/**
-			 * Combo Box (criteriaListComponent) event handler
-			 * Allow to use the automatic mode, now a criterion is choosen.
-			 * Fill in the List component (dataListComponent) when a criteria is choosen.
+
+			/*
+			 * Allow to use the automatic mode if a criterion is choosen.
+			 *
+			 * Fill in the List component (dataListComponent).
 			 * Filter the points to display on the heatmap.
 			 */
-			private function criteriaChoosen():void
+			private function _criterionChoosen():void
 			{
 				play.enabled=true;	
 				pause.enabled=true;
-				
+
 				dataListComponent.dataProvider = criteria[1][criteriaListComponent.selectedIndex] as ArrayCollection;
-		        dataListComponent.selectedIndex = 0;
-		        
-		        Heatmap.dataProvider = criteria[2]
-												[criteriaListComponent.selectedIndex]
-												[dataListComponent.selectedItem];
-				updateMarkersListTodisplay();
+				dataListComponent.selectedIndex = 0;
+
+				Heatmap.dataProvider = criteria[2]
+				                               [criteriaListComponent.selectedIndex]
+				                               [dataListComponent.selectedItem];
+				_updateMarkersListTodisplay();
 			}
-			
-			/**
-			 * List component (dataListComponent) event handler
+
+			/*
 			 * Filter the points to display on the heatmap.
 			 */
-			private function criterionValueChoosen():void
+			private function _criterionValueChoosen():void
 			{
 				Heatmap.dataProvider = criteria[2]
-												[criteriaListComponent.selectedIndex]
-												[dataListComponent.selectedItem];
-				updateMarkersListTodisplay();
+				                               [criteriaListComponent.selectedIndex]
+				                               [dataListComponent.selectedItem];
+				_updateMarkersListTodisplay();
 			}
-			
-	/**
-	 *  Getters and setters ------------------------------------------------
-	 */
-
 		]]>
 	</mx:Script>
 </mx:Canvas>
