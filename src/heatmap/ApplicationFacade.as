@@ -10,7 +10,7 @@ package heatmap
 	import org.puremvc.as3.multicore.patterns.facade.Facade;
 
 	/**
-	 * The facade.
+	 * Application Facade. The facade for PureMVC.
 	 *
 	 * @extends Facade
 	 * @implements IFacade

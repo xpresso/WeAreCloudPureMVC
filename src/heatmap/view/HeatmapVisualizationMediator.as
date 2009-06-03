@@ -15,7 +15,7 @@ package heatmap.view
 	import org.puremvc.as3.multicore.patterns.mediator.Mediator;
 
 	/**
-	 * The mediator.
+	 * HeatmapVisualizationMediator. The mediator for PureMVC.
 	 *
 	 * @extends Mediator
 	 * @implements IMediator

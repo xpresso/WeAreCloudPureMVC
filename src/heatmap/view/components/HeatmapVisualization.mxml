@@ -221,7 +221,7 @@
 
 			public function get Heatmap():HeatMap // Dunno why Heatmap works and not heatmap.
 			{
-				return this._heatmap;
+				return _heatmap;
 			}
 			/*
 			 * The heatmap overlay.
@@ -256,7 +256,8 @@
 				var mapContr:MapTypeControl = new MapTypeControl();
 	 			map.addControl(mapContr);
 
-				// Heatmap.
+				// Heatmap
+				_heatmap = new HeatMap();
 				_heatmap.transformationFunction = _latLngToPoint;
 				_heatmap.weightFunction = _intensityToWeight;
 				_heatmap.gradientArray = GradientDictionary.RAINBOW;

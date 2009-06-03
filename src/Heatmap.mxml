@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute"
-    applicationComplete="facade.startup(this)"
+	applicationComplete="facade.startup(this)"
 	xmlns:maps="com.google.maps.*"
 	xmlns:michaelvandaniker="michaelvandaniker.visualization.*"
 	xmlns:ourcomponents="heatmap.view.components.*">
