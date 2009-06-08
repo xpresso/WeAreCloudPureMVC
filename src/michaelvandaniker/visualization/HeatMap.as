@@ -1,34 +1,40 @@
 package michaelvandaniker.visualization
 {
-    import flash.display.BitmapData;
-    import flash.display.BlendMode;
-    import flash.display.GradientType;
-    import flash.display.Shape;
-    import flash.display.SpreadMethod;
-    import flash.events.Event;
-    import flash.filters.BlurFilter;
-    import flash.geom.Matrix;
-    import flash.geom.Point;
-    import flash.geom.Rectangle;
-    import mx.collections.ArrayCollection;
-    import mx.core.UIComponent;
-    import mx.events.CollectionEvent;
-    import mx.styles.CSSStyleDeclaration;
-    import mx.styles.StyleManager;
-	
+	// Flash imports.
+	import flash.display.BitmapData;
+	import flash.display.BlendMode;
+	import flash.display.GradientType;
+	import flash.display.Shape;
+	import flash.display.SpreadMethod;
+	import flash.events.Event;
+	import flash.filters.BlurFilter;
+	import flash.geom.Matrix;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
+
+	// Flex imports.
+	import mx.collections.ArrayCollection;
+	import mx.core.UIComponent;
+	import mx.events.CollectionEvent;
+	import mx.styles.CSSStyleDeclaration;
+	import mx.styles.StyleManager;
+
 	[Style(name="backgroundColor", type="uint", format="Color", inherit="no")]
 	[Style(name="backgroundAlpha", type="Number", inherit="no")]
 
 	/**
-	 * A HeatMap shows the density of a collection of points by giving each point a sphere
-	 * of influence.  The spheres are drawn to a BitmapData, which subsequently gets recolored
-	 * such that pixels with the most accumulated influence have the hottest colors. 
-	 * 
-	 * @author Michael Vandaniker
+	 * HeatMap. A HeatMap shows the density of a collection of points by giving each point a sphere of influence.
+	 * The spheres are drawn to a BitmapData, which subsequently gets recolored such that pixels with the most accumulated influence have the hottest colors. 
+	 *
+	 * @extends UIComponent
+	 * @author Michael Vandaniker.
 	 * @see http://michaelvandaniker.com/blog/2008/07/06/how-to-make-heat-maps-in-flex/
 	 */
-    public class HeatMap extends UIComponent
-    {
+	public class HeatMap extends UIComponent
+	{
+		/**
+		 * @constructor
+		 */
 		public function HeatMap()
 		{
 			super();
@@ -37,42 +43,40 @@ package michaelvandaniker.visualization
 			gradientArray = GradientDictionary.THERMAL;
 			alpha = .7;
 		}
-		
-		/**
-		 * Initialize the backgroundAlpha and backgroundColor styles
+
+		/*
+		 * Initialize the backgroundAlpha and backgroundColor styles.
 		 */
 		private static function initializeStyles():void
 		{
-			if (!StyleManager.getStyleDeclaration("HeatMap"))
-            {
-                var defaultStyles:CSSStyleDeclaration = new CSSStyleDeclaration();
-                defaultStyles.defaultFactory = function():void
-                {
-                    this.backgroundAlpha = 0;
-                    this.backgroundColor = 0;
-               }
-                StyleManager.setStyleDeclaration("HeatMap", defaultStyles, true);
-            }
+			if(!StyleManager.getStyleDeclaration("HeatMap"))
+			{
+				var defaultStyles:CSSStyleDeclaration = new CSSStyleDeclaration();
+				defaultStyles.defaultFactory = function():void
+					{
+						this.backgroundAlpha = 0;
+						this.backgroundColor = 0;
+					}
+				StyleManager.setStyleDeclaration("HeatMap", defaultStyles, true);
+			}
 		}
 		initializeStyles();
-		
+
 		/**
-		 * A few BitmapData operations take a Point as an argument.
-		 * Save a tiny bit of memory by making that Point a constant.
+		 * A few BitmapData operations take a Point as an argument. Save a tiny bit of memory by making that Point a constant.
 		 */ 
 		public static const POINT:Point = new Point();
-		
-		/**
-		 * true if the dataProvider has changed.
+
+		/*
+		 * True if the dataProvider has changed.
 		 */
 		protected var collectionDirtyFlag:Boolean = true;
-        
-        /**
-		 * true if something has happened the requires a potential change
-		 * to centerValeu.
+
+		/*
+		 * True if something has happened the requires a potential change to centerValue.
 		 */
-        protected var centerValueDirtyFlag:Boolean = true; 
-        
+		protected var centerValueDirtyFlag:Boolean = true;
+
         /**
          * The width the last time updateDisplayList was called
          */
